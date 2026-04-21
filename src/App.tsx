@@ -195,7 +195,7 @@ function App() {
               View bio
             </a>
           </article>
-          <article>
+          <article className="team-card reveal stagger-3">
             <span className="card-index">03</span>
             <h3>gir0fa</h3>
             <p className="team-role">Senior Developer</p>
