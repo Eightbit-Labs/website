@@ -195,6 +195,20 @@ function App() {
               View bio
             </a>
           </article>
+          <article>
+            <span className="card-index">03</span>
+            <h3>gir0fa</h3>
+            <p className="team-role">Senior Developer</p>
+            <a
+              className="team-link btn-animated"
+              href="https://github.com/wbrous"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <GithubIcon />
+              View bio
+            </a>
+          </article>
         </div>
       </section>
 
