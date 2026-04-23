@@ -401,6 +401,10 @@
   transition-delay: 210ms;
 }
 
+.stagger-4 {
+  transition-delay: 280ms;
+}
+
 @keyframes buttonSheen {
   0% {
     transform: translateX(-140%);

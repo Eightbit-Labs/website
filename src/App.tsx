@@ -209,6 +209,21 @@ function App() {
               View bio
             </a>
           </article>
+
+          <article className="team-card reveal stagger-4">
+            <span className="card-index">04</span>
+            <h3>Mr_Dragon0011</h3>
+            <p className="team-role">Mid-Level Developer</p>
+            <a
+              className="team-link btn-animated"
+              href="https://github.com/MrDragon0011"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <GithubIcon />
+              View bio
+            </a>
+          </article>
         </div>
       </section>
 
