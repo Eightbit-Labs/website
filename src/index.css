@@ -1,23 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Manrope:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #050505;
-  --panel: rgba(255, 255, 255, 0.03);
-  --white: #f5f5f5;
-  --text-strong: #f7f7f7;
-  --text-soft: rgba(255, 255, 255, 0.78);
-  --text-muted: rgba(255, 255, 255, 0.46);
-  --border-soft: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --heading: 'Space Grotesk', 'Segoe UI', sans-serif;
-  --body: 'Space Grotesk', 'Segoe UI', sans-serif;
-  --mono: 'IBM Plex Mono', 'Consolas', monospace;
-  color-scheme: dark;
-  font: 17px/1.6 var(--body);
-  color: var(--text-soft);
-  background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 30%),
-    linear-gradient(180deg, #0a0a0a 0%, #030303 100%);
+  --color-night-sky: #1f1f29;
+  --color-cofounder-blue: #0081c0;
+  --color-action-azure: #41a1cf;
+  --color-pitch-black: #000000;
+  --color-canvas-white: #ffffff;
+  --color-off-white: #fefffc;
+  --color-ash-gray: #f9faf7;
+  --color-cool-gray: #eef1ed;
+  --color-steel-gray: #dee2de;
+  --color-dark-charcoal: #171717;
+  --color-charcoal: #2c2c2c;
+  --color-rich-black: #282834;
+  --color-slate-gray: #444141;
+  --color-medium-gray: #646464;
+  --color-light-gray: #b4b8b4;
+
+  --font-ppmondwest: 'PPMondwest', 'Fraunces', 'Times New Roman', serif;
+  --font-af: 'af', 'Manrope', 'Segoe UI', system-ui, sans-serif;
+
+  --text-caption: 13px;
+  --leading-caption: 1.5;
+  --tracking-caption: -0.13px;
+  --text-button-label: 16px;
+  --leading-button-label: 1;
+  --tracking-button-label: -0.19px;
+  --text-subheading: 18px;
+  --leading-subheading: 1.2;
+  --tracking-subheading: -0.18px;
+  --text-heading: 40px;
+  --leading-heading: 1.1;
+  --tracking-heading: -0.8px;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.1;
+  --tracking-heading-lg: -0.96px;
+  --text-display: 54px;
+  --leading-display: 1.1;
+  --tracking-display: -1.08px;
+
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+
+  --section-gap: 32px;
+  --card-padding: 16px;
+  --element-gap: 8px;
+  --page-max-width: 1200px;
+
+  --radius-none: 0;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 50.496px;
+
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0 2px 6px;
+  --shadow-subtle: rgb(222, 226, 222) 0 0 0 1px;
+  --shadow-subtle-2: rgba(0, 0, 0, 0.08) 0 1px 1px, rgba(0, 0, 0, 0.08) 0 4px 5px;
+  --shadow-subtle-3: rgba(0, 0, 0, 0.06) 0 2px 2px, rgba(0, 0, 0, 0.04) 0 0 0 5px;
+  --shadow-sm-2: rgba(0, 0, 0, 0.05) 0 1px 8px;
+
+  color-scheme: light;
+  font: 16px/1.4 var(--font-af);
+  color: var(--color-dark-charcoal);
+  background: var(--color-canvas-white);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -36,9 +92,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 16%),
-    var(--bg);
+  background: var(--color-canvas-white);
 }
 
 body::before {
@@ -46,11 +100,17 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent 92%);
+  z-index: -2;
+  background: linear-gradient(180deg, var(--color-canvas-white), var(--color-off-white));
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(222, 226, 222, 0.2), rgba(222, 226, 222, 0));
 }
 
 a {
@@ -76,40 +136,40 @@ dl {
 h1,
 h2,
 h3 {
-  color: var(--text-strong);
-  font-family: var(--heading);
-  font-weight: 500;
-  letter-spacing: -0.04em;
+  color: var(--color-pitch-black);
+  font-family: var(--font-ppmondwest);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'liga' 0;
 }
 
 h1 {
-  max-width: 12ch;
-  font-size: clamp(3rem, 7vw, 5.7rem);
-  line-height: 0.96;
+  font-size: clamp(2.3rem, 5vw, var(--text-display));
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
 }
 
 h2 {
-  max-width: 12ch;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1;
+  font-size: clamp(2rem, 4vw, var(--text-heading-lg));
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading-lg);
 }
 
 h3 {
-  font-size: 1.55rem;
-  line-height: 1.1;
+  font-family: var(--font-af);
+  font-size: var(--text-subheading);
+  font-weight: 600;
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
 }
 
 p {
   max-width: 62ch;
+  font-family: var(--font-af);
 }
 
 @media (max-width: 720px) {
   :root {
-    font-size: 16px;
-  }
-
-  h1,
-  h2 {
-    max-width: none;
+    font-size: 15px;
   }
 }
