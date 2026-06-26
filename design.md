@@ -1,381 +1,187 @@
-# General Intelligence Company — Style Reference
-> Architectural Night Sky
+# Eightbit Labs — Design System
 
-**Theme:** light
+> **Convergence** — the studio where two streams meet at a point.
 
-General Intelligence Company employs a sophisticated aesthetic, blending an evocative, illustrative dark hero with a predominantly minimalist, architectural light UI. Typography is restrained and elegant, utilizing a serif for headlines that conveys gravitas and a clean sans-serif for body text. Surfaces are layered with subtle translucency and soft, multi-layered shadows, creating depth without heaviness. The overall impression is one of calm authority and advanced technology, articulated through precise achromatic forms punctuated by a singular, cool blue accent for interactive elements.
+**Theme:** light · **Mood:** engineered, calm, fast · **Risk taken:** the whole page is organized around the logo's pinch point, with a live "bit-stream" that flows down and converges in the hero.
 
-## Tokens — Colors
+---
 
-| Name | Value | Token | Role |
-|------|-------|-------|------|
-| Night Sky | `#1f1f29` | `--color-night-sky` | Dark base for hero sections and occasional accent backgrounds; creates a deep, contemplative atmosphere |
-| Cofounder Blue | `#0081c0` | `--color-cofounder-blue` | Highlight elements, card backgrounds for featured content, and active interface states. Its vivid hue draws attention while maintaining a high-tech feel |
-| Action Azure | `#41a1cf` | `--color-action-azure` | Border color for ghost buttons and interactive elements, providing a clear but understated active state |
-| Pitch Black | `#000000` | `--color-pitch-black` | Primary text for headings and bold statements against light backgrounds, emphasizing core information |
-| Canvas White | `#ffffff` | `--color-canvas-white` | Main page background, component backgrounds, and primary text on dark elements, maintaining brightness and spaciousness |
-| Off White | `#fefffc` | `--color-off-white` | Subtle alternative background for secondary sections and cards, creating a slight visual separation from the main canvas |
-| Ash Gray | `#f9faf7` | `--color-ash-gray` | Background for input fields and navigation elements, providing a soft contrast |
-| Cool Gray | `#eef1ed` | `--color-cool-gray` | Subtle border for UI elements and dividers, offering minimal distinction |
-| Steel Gray | `#dee2de` | `--color-steel-gray` | Hairline borders and soft shadows, contributing to a refined, nearly unnoticeable separation of elements |
-| Dark Charcoal | `#171717` | `--color-dark-charcoal` | Primary body text and deep contrast accents. Used where legibility against light backgrounds is paramount |
-| Charcoal | `#2c2c2c` | `--color-charcoal` | Secondary text and less prominent headings, providing contrast below the primary text level |
-| Rich Black | `#282834` | `--color-rich-black` | Darker accent for navigation hover states and subtly outlined actions, providing depth on dark surfaces |
-| Slate Gray | `#444141` | `--color-slate-gray` | Placeholder text and subtle icon fills, indicating less active states or auxiliary information |
-| Medium Gray | `#646464` | `--color-medium-gray` | Muted text for helper descriptions and secondary information, reducing visual noise |
-| Light Gray | `#b4b8b4` | `--color-light-gray` | Lightest neutral used for subtle background variations or very soft dividers |
+## 1. The subject, pinned
 
-## Tokens — Typography
+Eightbit Labs is a small, sharp software studio that builds **neural systems** and **the web platforms that carry them**. The audience is technical decision-makers (founders, eng leads) sizing the team up, plus developer peers. The page has one job: convince them this team ships precise, intelligent software, then route them to GitHub.
 
-### PPMondwest — Headlines and prominent display text. Its distinct serif creates a sense of gravitas and intellectual authority, often appearing in sizes like 40px and 54px. · `--font-ppmondwest`
-- **Weights:** 400, 500
-- **Sizes:** 40px, 48px, 54px
-- **Line height:** 1.10
-- **Letter spacing:** -0.0200em
-- **OpenType features:** `"liga" 0`
-- **Role:** Headlines and prominent display text. Its distinct serif creates a sense of gravitas and intellectual authority, often appearing in sizes like 40px and 54px.
+The brand's own artifact does the design work for us. The logo is an **hourglass built from two triangles** — a downward, solid triangle meeting an upward, outlined triangle at a narrow pinch. It encodes the two things the studio actually is:
 
-### af — Body text, navigation, buttons, and all functional UI labels. This sans-serif provides clarity and modernity, varying in weight from 400 for standard body copy to 700 for more prominent labels, with a subtle negative letter spacing for a compact feel across sizes 13px to 18px. · `--font-af`
-- **Weights:** 400, 500, 600, 700
-- **Sizes:** 13px, 15px, 16px, 18px
-- **Line height:** 1.00, 1.20, 1.30, 1.40, 1.50
-- **Letter spacing:** -0.0120em, -0.0100em
-- **Role:** Body text, navigation, buttons, and all functional UI labels. This sans-serif provides clarity and modernity, varying in weight from 400 for standard body copy to 700 for more prominent labels, with a subtle negative letter spacing for a compact feel across sizes 13px to 18px.
+- **Two disciplines converging** — neural systems (▽) and web engineering (△) meeting at one point: integrated delivery.
+- **Flow and time** — sand through a glass; "eightbit" = the byte, the smallest unit, streaming through.
 
-### Type Scale
+So the design isn't decorated *with* the logo — it is built *as* the logo. The spine of the page is a vertical convergence axis; sections are separated by **pinch dividers** (two hairline triangles kissing at a point); the hero literally streams bits down to the pinch.
 
-| Role | Size | Line Height | Letter Spacing | Token |
-|------|------|-------------|----------------|-------|
-| caption | 13px | 1.5 | -0.13px | `--text-caption` |
-| button-label | 16px | 1 | -0.19px | `--text-button-label` |
-| subheading | 18px | 1.2 | -0.18px | `--text-subheading` |
-| heading | 40px | 1.1 | -0.8px | `--text-heading` |
-| heading-lg | 48px | 1.1 | -0.96px | `--text-heading-lg` |
-| display | 54px | 1.1 | -1.08px | `--text-display` |
+This is deliberately **not** the three AI defaults: not cream-paper-serif-terracotta (we use a cool neutral paper, a grotesque, and amber stays disciplined and monochrome-first), not near-black-with-acid-accent (light theme), not a hairline broadsheet (we have one bold orchestrated moment, generous space, and radii).
 
-## Tokens — Spacing & Shapes
+---
 
-**Base unit:** 4px
+## 2. Color
 
-**Density:** comfortable
+Achromatic at the core — true to a logo that is literally black and white — with **one** warm accent standing in for the flowing sand. Paper is cool-neutral white, never cream.
 
-### Spacing Scale
+| Name | Hex | Role |
+|------|-----|------|
+| **Paper** | `#F5F6F4` | Page background — cool off-white, the "glass" |
+| **Bright** | `#FCFDFB` | Raised card / panel surface |
+| **Ink** | `#0C0D0E` | Primary text, the solid triangle, near-black |
+| **Graphite** | `#5A5E60` | Secondary text, mono labels |
+| **Mist** | `#E2E5E1` | Hairlines, borders, dividers |
+| **Pinch** | `#101216` | The one dark band (integrated-delivery / pinch panel) |
+| **Flux** | `#F0531C` | Accent — molten sand. Links, active state, the stream, one emphasis |
+| **Flux-soft** | `rgba(240,83,28,0.12)` | Accent wash for hovers/fills |
 
-| Name | Value | Token |
-|------|-------|-------|
-| 4 | 4px | `--spacing-4` |
-| 8 | 8px | `--spacing-8` |
-| 12 | 12px | `--spacing-12` |
-| 16 | 16px | `--spacing-16` |
-| 20 | 20px | `--spacing-20` |
-| 24 | 24px | `--spacing-24` |
-| 32 | 32px | `--spacing-32` |
-| 40 | 40px | `--spacing-40` |
-| 48 | 48px | `--spacing-48` |
-| 64 | 64px | `--spacing-64` |
-| 80 | 80px | `--spacing-80` |
+**Rule:** Flux appears only at points of *convergence or interaction* — the bit-stream, a link underline drawing to a point, the active nav tick, the CTA. If it shows up as decoration, remove it. The page should read black-on-white with amber sparks.
 
-### Border Radius
+---
 
-| Element | Value |
-|---------|-------|
-| nav | 50.496px |
-| none | 0px |
-| buttons | 4px |
-| cardsLarge | 24px |
-| cardsSmall | 12px |
-| cardsMedium | 16px |
-| navItemsSmall | 8px |
+## 3. Typography
 
-### Shadows
+The logo wordmark is rounded and geometric, so the type goes the other way — crisp grotesque — and lets the mark hold the round. Three roles, all on Google Fonts.
 
-| Name | Value | Token |
-|------|-------|-------|
-| sm | `rgba(0, 0, 0, 0.15) 0px 2px 6px 0px` | `--shadow-sm` |
-| subtle | `rgb(222, 226, 222) 0px 0px 0px 1px` | `--shadow-subtle` |
-| subtle-2 | `rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) ...` | `--shadow-subtle-2` |
-| subtle-3 | `rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) ...` | `--shadow-subtle-3` |
-| sm-2 | `rgba(0, 0, 0, 0.05) 0px 1px 8px 0px` | `--shadow-sm-2` |
+- **Display — Bricolage Grotesque (800/700).** Characterful modern grotesque with optical flare; not Inter/Space-Grotesk default. Tight tracking. Used big and rarely.
+- **Body / UI — Hanken Grotesk (400/500/600).** Warm, legible grotesque, less ubiquitous than Inter. All paragraphs, buttons, nav.
+- **Utility / data — JetBrains Mono (400/500).** The "eightbit" voice: eyebrows, stats, role tags, section indices, rendered like terminal output (`// neural`, `05 — engineers`). Encodes real metadata, never decoration.
 
-### Layout
+### Scale
 
-- **Section gap:** 32px
-- **Card padding:** 16px
-- **Element gap:** 8px
+| Role | Font | Size (clamp) | Weight | Tracking |
+|------|------|------|--------|----------|
+| Hero | Bricolage | `clamp(2.9rem, 7vw, 5.5rem)` | 800 | -0.03em |
+| H2 | Bricolage | `clamp(2rem, 4vw, 3.25rem)` | 700 | -0.025em |
+| H3 | Hanken | `1.25rem` | 600 | -0.01em |
+| Body | Hanken | `1.0625rem` | 400 | -0.005em |
+| Lead | Hanken | `clamp(1.05rem, 1.6vw, 1.3rem)` | 400 | -0.01em |
+| Mono label | JetBrains Mono | `0.78rem` | 500 | 0.04em, uppercase |
 
-## Components
+---
 
-### Ghost Button
-**Role:** Subtle interactive element
+## 4. Layout
 
-Transparent background, text color typically #444141 or #171717, no explicit border, 0px radius. Used for links within text or secondary actions.
+A single centered column (max `1180px`) with a **convergence axis** running down the middle. Sections alternate Paper / Bright and are joined by **pinch dividers** rather than plain rules. Generous vertical rhythm (`clamp(6rem, 12vh, 9rem)` between sections).
 
-### Subtle Nav Button
-**Role:** Navigation item or secondary ghost action
+```
+┌──────────────────────────────────────────────┐
+│ ◢◣ eightbit labs            // github ↗       │  sticky, mono meta, blur
+├──────────────────────────────────────────────┤
+│            ▽   bits stream down ↓             │
+│           ╲   ·  · ·  ·   ╱                   │   HERO
+│        We build software that thinks.         │   Bricolage 800
+│        ╱   · converge at pinch ·  ╲           │
+│            △   ↑ disperse below               │
+│   [ explore github ]   [ see the work ]       │
+│   // neural systems · web engineering         │
+└──────────────────────────────────────────────┘
+                  · ▽△ ·   pinch divider
+┌──────────────────────────────────────────────┐
+│ // what we build                              │
+│  ┌────────────┐    ▷◁    ┌────────────┐       │  TWO STREAMS
+│  │ ▽ neural   │  pinch   │ △ web      │       │  converge inward
+│  │   systems  │          │ engineering│       │
+│  └────────────┘          └────────────┘       │
+│        ┌──────── pinch panel (dark) ───────┐  │
+│        │ integrated delivery — where they  │  │
+│        │ meet                              │  │
+│        └───────────────────────────────────┘  │
+└──────────────────────────────────────────────┘
+                  · ▽△ ·
+┌──────────────────────────────────────────────┐
+│ // the team        05 — engineers            │  TEAM
+│  five who ship                                │
+│  [card] [card] [card] [card] [card]           │  mono role tags
+└──────────────────────────────────────────────┘
+                  · ▽△ ·
+┌──────────────────────────────────────────────┐
+│  See what we're building.                     │  CTA band
+│  github.com/Eightbit-Labs            →        │
+└──────────────────────────────────────────────┘
+```
 
-Background rgba(255, 255, 255, 0.06), text color #171717, 8px border radius, 5px vertical padding and 12px horizontal padding. Offers a soft, contained interaction.
+**Capabilities as content-true structure:** the two disciplines are presented as two streams that slide *toward center* on scroll and resolve into the dark "integrated delivery" pinch panel below — the hourglass narrative, not arbitrary 01/02/03 numbering. Numbered markers are dropped; mono tags carry real info instead.
 
-### Solid Dark Button
-**Role:** Primary action within darker contexts
+---
 
-Background #1f1f29, text color #ffffff. Border #282834, 8px border radius, 7px top, 8px bottom, 16px left, 12px right padding. Used for high-emphasis CTAs.
+## 5. Signature — the pinch & the bit-stream
 
-### Outlined Action Button
-**Role:** Interactive button with a defined border
+**One memorable thing, executed well; everything else stays quiet.**
 
-Ghost background, text color #444141 or #171717, border color #41a1cf or #282834, 4px border radius. Offers a clear but not overly prominent action.
+1. **Bit-stream (hero).** A canvas of small squares ("bits") drifts slowly down through the hero, pulled toward the central axis as it nears the pinch line, then dispersing below — an hourglass of light, the literal "eightbit through the glass." Amber-tinted, sparse (~78 bits), low opacity. Fall speed is kept very slow (a bit takes ~12–30s top-to-bottom) so it reads as a calm, settling drift rather than motion.
+2. **Pinch dividers.** Between every section, two thin triangles meet at a center point — a recurring echo of the mark that ties the page together cheaply and unmistakably.
+3. **The original logo**, set in a rounded black tile so the white hourglass reads on light paper — used in nav, the CTA centerpiece, and footer.
 
-### Blurred Nav Item
-**Role:** Navigation element with translucent background
+---
 
-Background #f9faf7 with blur effect, 50.496px border radius, #171717 text. Soft shadow rgba(0, 0, 0, 0.15) 0px 2px 6px 0px. Used in the header, suggesting elegance and lightness.
+## 6. Motion
 
-### Elevated Content Card
-**Role:** Content container with subtle elevation
+Deliberate, reduced-motion-safe (everything below freezes to a tasteful static state under `prefers-reduced-motion`).
 
-Background #fefffc, 12px border radius. Soft shadow rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px. Used for featured information blocks.
+- **Load sequence:** hero headline clip-reveals line by line → lead + CTAs fade up → the bit-stream drifts underneath.
+- **Ambient:** the bit-stream (hero only), a very slow downward drift converging at the pinch. Nothing else moves on its own.
+- **Scroll reveals:** sections rise + clip from the convergence axis (IntersectionObserver, staggered).
+- **Capabilities:** the two discipline cards translate inward toward the pinch as they enter.
+- **Hover micro:** buttons fill from a center point with Flux-soft + draw a 1px Flux underline to a point; cards lift 2px and gain a Flux hairline + a triangular corner notch.
 
-### Hero Overlay Card
-**Role:** Translucent content block over imagery
+---
 
-Background rgba(222, 226, 222, 0.16), 24px border radius, no shadow. 16px padding. Used on the hero section for minimal visual intrusion and atmospheric depth.
+## 7. Components
 
-### Cofounder Featured Card
-**Role:** Prominent, brand-colored feature display
+- **Nav:** sticky, translucent blur pill-bar; SVG mark + wordmark left, mono `// github ↗` link right; active scroll position shows a small Flux tick.
+- **Button / primary:** Ink fill, Paper text, fills toward Flux on hover. **Secondary:** Mist hairline, Ink text, Flux-soft wash on hover.
+- **Capability card:** Bright surface, Mist hairline, generous padding, a discipline triangle (▽/△) drawn in the corner, mono tag.
+- **Pinch panel:** Pinch dark surface, Paper text, one Flux keyline — the only dark block on the page.
+- **Team card:** Bright surface, name (Hanken 600), mono role tag, GitHub link; hover reveals a triangular notch + Flux handle.
+- **Pinch divider:** centered two-triangle SVG, Mist stroke.
 
-Background #0081c0, 24px border radius. Complex shadow rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0) 0px 6px 6px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px. Generous padding 128px top, 80px right/bottom/left. Commands attention for key information.
+---
 
-### Ghost Input Field
-**Role:** Standard user input field
+## 8. Voice & copy
 
-Background #f9faf7, text and border #444141, 0px border radius. Default padding for clarity.
+Plain, confident, engineered. Active verbs, sentence case, no filler.
 
-## Do's and Don'ts
+- **Eyebrow:** `// neural systems + web engineering`
+- **Hero H1:** *We build software that thinks.*
+- **Hero lead:** *Eightbit Labs ships neural systems and the web platforms that carry them — engineered for speed, clarity, and production from day one.*
+- **Capabilities H2:** *Two disciplines, one point of convergence.*
+  - Neural systems — *Model-backed features, inference workflows, and experimentation pipelines built to run inside real products.*
+  - Web engineering — *High-performance interfaces, API-connected apps, and developer tooling that stays maintainable.*
+  - Integrated delivery (pinch) — *Where the two streams meet: machine intelligence wired to strong UX, deliberate from architecture to interface.*
+- **Team H2:** *The people who ship it.*  ·  mono: `05 — engineers`
+- **CTA:** *See what we're building.* → `github.com/Eightbit-Labs`
 
-### Do
-- Prioritize PPMondwest for all display and large headings (40px, 48px, 54px) using weight 400 or 500, with letter-spacing -0.0200em for a refined, compact look.
-- Use 'Night Sky' (#1f1f29) as a deep, rich background for hero sections or brand-defining modules, contrasting with light body text and elements.
-- Layer surfaces with 'Off White' (#fefffc) and 'Canvas White' (#ffffff) to provide subtle depth and structure on light-themed pages, emphasizing 'Canvas White' for main backgrounds and 'Off White' for slightly recessed elements.
-- Apply 'Cofounder Blue' (#0081c0) sparingly as a functional accent color for key cards or active states, reserving its prominence for maximum impact.
-- Implement soft, layered shadows for card components (e.g., rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px) to give elements a subtle lift without feeling heavy.
-- Maintain a comfortable density with an element gap of 8px and card padding of 16px, ensuring sufficient breathing room between UI elements.
-- Round corners with care: use 4px for small buttons, 8px for main interactive elements, 12px for cards, and 24px for larger, more prominent cards like the 'Hero Overlay Card', with 50.496px for highly rounded nav items.
+---
 
-### Don't
-- Avoid excessive use of 'Cofounder Blue' (#0081c0) outside of clear accent roles; it should highlight, not dominate, the UI.
-- Do not introduce strong, bold colors or gradients other than the defined brand accents; the system relies on a sophisticated achromatic foundation.
-- Resist using heavy, opaque backgrounds for layered elements on light pages; instead, favor sublte translucency (rgba(222, 226, 222, 0.16)) for a delicate, modern effect.
-- Do not use letter-spacing values tighter than -0.0200em for headings or wider than -0.0100em for body text. Maintain the precise, compact typographic rhythm.
-- Refrain from sharp, angular corners for cards and buttons; apply the specified radii (4px, 8px, 12px, 16px, 24px, 50.496px) consistently for a softer, approachable feel.
-- Do not deviate from the specified shadow values; the subtle, multi-layered shadows are key to the brand's sophisticated depth without visual clutter.
-- Avoid cluttering the layout; aim for comfortable spacing both vertically (32px section gap) and horizontally, letting content breathe rather than stacking elements too closely.
+## 9. Quality floor
 
-## Elevation
+Responsive to 320px (stream thins, grids collapse to one column, nav wraps). Visible keyboard focus (2px Flux ring). `prefers-reduced-motion` respected everywhere. Color contrast: Ink on Paper ≥ 15:1; Graphite on Paper ≥ 5:1; Flux used for accent/large text, never small body.
 
-- **Nav Items:** `rgba(0, 0, 0, 0.15) 0px 2px 6px 0px`
-- **Card:** `rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px`
-- **Cofounder Featured Card:** `rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0) 0px 6px 6px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px`
-- **Input fields and subtle UI elements:** `rgba(0, 0, 0, 0.05) 0px 1px 8px 0px`
+---
 
-## Imagery
-
-The visual language for imagery combines two distinct styles: a highly detailed, illustrative, dark-themed cityscape for the hero section, serving as an atmospheric backdrop, and minimalist, contained product screenshots or abstract graphics for content areas. Photography is absent. Illustrations are organic and atmospheric in the hero, while content area graphics are abstract and geometric, typically featuring outlined shapes and a subdued, near-achromatic palette. Icons are outlined, with a moderate stroke weight, and mostly monochromatic. Imagery acts as both decorative atmosphere in the hero to draw the user in and as explanatory content in product sections, with a balanced density on content-heavy pages.
-
-## Layout
-
-The page structure features an initial full-bleed hero section defined by a dark, illustrative cityscape background with a centered headline. Following this, the layout transitions to a contained, max-width (implied 1200px from content grouping) centered model for content sections. Sections alternate between 'Canvas White' and 'Off White' backgrounds, establishing a clear visual rhythm. Content is arranged predominantly in a two-column text-left/image-right pattern or centered text stacks for emphasis. Feature grids may appear in three-column structures. Navigation is a compact top bar, with sticky behavior, containing minimalist text links and a 'Get Cofounder' button.
-
-## Agent Prompt Guide
-
-Quick Color Reference: 
-text: #171717
-background: #ffffff
-border: #dee2de
-accent: #0081c0
-primary action: #41a1cf (outlined action border)
-
-Example Component Prompts:
-1. Create a hero section with a 'Night Sky' background (#1f1f29). Headline (PPMondwest, 54px, weight 400, #ffffff, letter-spacing -1.08px). Subtext (af, 18px, weight 400, #ffffff, line-height 1.2).
-2. Create an 'Elevated Content Card': background 'Off White' (#fefffc), 12px border-radius, box-shadow rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px, 16px padding. Title (af, 18px, weight 600, #2c2c2c), body text (af, 16px, weight 400, #171717).
-3. Create an 'Outlined Action Button': background transparent, border 1px solid 'Action Azure' (#41a1cf), text 'Dark Charcoal' (#171717), 4px border-radius. Text (af, 16px, weight 500, letter-spacing -0.19px), 5px vertical / 12px horizontal padding.
-4. Create a 'Blurred Nav Item': background rgba(255, 255, 255, 0.06), 50.496px border-radius, box-shadow rgba(0, 0, 0, 0.15) 0px 2px 6px 0px. Text (af, 15px, weight 400, #171717), 8px padding. Implement a backdrop-filter: blur(9px).
-
-## Similar Brands
-
-- **Linear** — Shares a sophisticated dark header/light body theme, minimalist aesthetic, and subtle elevation patterns.
-- **Anthropic (Cloude)** — Similar restrained aesthetic, heavy use of high-quality custom typography, and a bias towards clean, functional UI over decorative elements.
-- **Stripe** — Uses a similar approach to elegant typography, crisp surfaces, and a well-defined achromatic palette with controlled accent colors for interactive elements.
-- **Intercom** — Features a balanced use of white space, crisp typography, and strategic color accents to highlight key information or actions, against a generally light background.
-
-## Quick Start
-
-### CSS Custom Properties
+## 10. Tokens (CSS custom properties)
 
 ```css
 :root {
-  /* Colors */
-  --color-night-sky: #1f1f29;
-  --color-cofounder-blue: #0081c0;
-  --color-action-azure: #41a1cf;
-  --color-pitch-black: #000000;
-  --color-canvas-white: #ffffff;
-  --color-off-white: #fefffc;
-  --color-ash-gray: #f9faf7;
-  --color-cool-gray: #eef1ed;
-  --color-steel-gray: #dee2de;
-  --color-dark-charcoal: #171717;
-  --color-charcoal: #2c2c2c;
-  --color-rich-black: #282834;
-  --color-slate-gray: #444141;
-  --color-medium-gray: #646464;
-  --color-light-gray: #b4b8b4;
+  /* color */
+  --paper:#F5F6F4; --bright:#FCFDFB; --ink:#0C0D0E; --graphite:#5A5E60;
+  --mist:#E2E5E1; --pinch:#101216; --flux:#F0531C; --flux-soft:rgba(240,83,28,.12);
 
-  /* Typography — Font Families */
-  --font-ppmondwest: 'PPMondwest', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-af: 'af', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* type */
+  --font-display:'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body:'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono:'JetBrains Mono', ui-monospace, monospace;
 
-  /* Typography — Scale */
-  --text-caption: 13px;
-  --leading-caption: 1.5;
-  --tracking-caption: -0.13px;
-  --text-button-label: 16px;
-  --leading-button-label: 1;
-  --tracking-button-label: -0.19px;
-  --text-subheading: 18px;
-  --leading-subheading: 1.2;
-  --tracking-subheading: -0.18px;
-  --text-heading: 40px;
-  --leading-heading: 1.1;
-  --tracking-heading: -0.8px;
-  --text-heading-lg: 48px;
-  --leading-heading-lg: 1.1;
-  --tracking-heading-lg: -0.96px;
-  --text-display: 54px;
-  --leading-display: 1.1;
-  --tracking-display: -1.08px;
+  /* space */
+  --col-max:1180px; --gutter:clamp(1.25rem,4vw,2.5rem);
+  --section-y:clamp(6rem,12vh,9rem);
 
-  /* Typography — Weights */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  /* Spacing */
-  --spacing-unit: 4px;
-  --spacing-4: 4px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-20: 20px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-64: 64px;
-  --spacing-80: 80px;
-
-  /* Layout */
-  --section-gap: 32px;
-  --card-padding: 16px;
-  --element-gap: 8px;
-
-  /* Border Radius */
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-3xl: 24px;
-  --radius-full: 50.496px;
-
-  /* Named Radii */
-  --radius-nav: 50.496px;
-  --radius-none: 0px;
-  --radius-buttons: 4px;
-  --radius-cardslarge: 24px;
-  --radius-cardssmall: 12px;
-  --radius-cardsmedium: 16px;
-  --radius-navitemssmall: 8px;
-
-  /* Shadows */
-  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
-  --shadow-subtle: rgb(222, 226, 222) 0px 0px 0px 1px;
-  --shadow-subtle-2: rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px;
-  --shadow-subtle-3: rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px;
-  --shadow-sm-2: rgba(0, 0, 0, 0.05) 0px 1px 8px 0px;
-}
-```
-
-### Tailwind v4
-
-```css
-@theme {
-  /* Colors */
-  --color-night-sky: #1f1f29;
-  --color-cofounder-blue: #0081c0;
-  --color-action-azure: #41a1cf;
-  --color-pitch-black: #000000;
-  --color-canvas-white: #ffffff;
-  --color-off-white: #fefffc;
-  --color-ash-gray: #f9faf7;
-  --color-cool-gray: #eef1ed;
-  --color-steel-gray: #dee2de;
-  --color-dark-charcoal: #171717;
-  --color-charcoal: #2c2c2c;
-  --color-rich-black: #282834;
-  --color-slate-gray: #444141;
-  --color-medium-gray: #646464;
-  --color-light-gray: #b4b8b4;
-
-  /* Typography */
-  --font-ppmondwest: 'PPMondwest', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-af: 'af', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-  /* Typography — Scale */
-  --text-caption: 13px;
-  --leading-caption: 1.5;
-  --tracking-caption: -0.13px;
-  --text-button-label: 16px;
-  --leading-button-label: 1;
-  --tracking-button-label: -0.19px;
-  --text-subheading: 18px;
-  --leading-subheading: 1.2;
-  --tracking-subheading: -0.18px;
-  --text-heading: 40px;
-  --leading-heading: 1.1;
-  --tracking-heading: -0.8px;
-  --text-heading-lg: 48px;
-  --leading-heading-lg: 1.1;
-  --tracking-heading-lg: -0.96px;
-  --text-display: 54px;
-  --leading-display: 1.1;
-  --tracking-display: -1.08px;
-
-  /* Spacing */
-  --spacing-4: 4px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-20: 20px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-64: 64px;
-  --spacing-80: 80px;
-
-  /* Border Radius */
-  --radius-md: 4px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-3xl: 24px;
-  --radius-full: 50.496px;
-
-  /* Shadows */
-  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
-  --shadow-subtle: rgb(222, 226, 222) 0px 0px 0px 1px;
-  --shadow-subtle-2: rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px;
-  --shadow-subtle-3: rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px;
-  --shadow-sm-2: rgba(0, 0, 0, 0.05) 0px 1px 8px 0px;
+  /* radius + shadow */
+  --r-sm:6px; --r-md:12px; --r-lg:20px; --r-pill:999px;
+  --shadow-card:0 1px 2px rgba(12,13,14,.04), 0 12px 32px -12px rgba(12,13,14,.12);
+  --shadow-pop:0 2px 6px rgba(12,13,14,.06), 0 24px 60px -20px rgba(12,13,14,.22);
+  --ease:cubic-bezier(.22,1,.36,1);
 }
 ```
