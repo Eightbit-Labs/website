@@ -343,41 +343,78 @@
   margin-bottom: 0.9rem;
 }
 
-.streams {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(1rem, 2.5vw, 1.6rem);
+/* convergence forge — the work section built as the hourglass */
+.forge-stage {
+  position: relative;
 }
 
-.stream-card {
+.forge-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.forge-cards {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 9vw, 7rem);
+}
+
+.disc-card {
   position: relative;
   padding: clamp(1.6rem, 3vw, 2.4rem);
-  background: var(--bright);
+  background: color-mix(in srgb, var(--bright) 80%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border: 1px solid var(--mist);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
-.stream-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-pop);
-  border-color: var(--flux-line);
-}
-
-.stream-glyph {
+/* corner wash that lights up from the discipline's outer edge */
+.disc-card::after {
+  content: '';
   position: absolute;
-  top: clamp(1rem, 2.5vw, 1.8rem);
-  right: clamp(1.2rem, 3vw, 2.2rem);
-  font-size: 2.2rem;
+  inset: 0;
+  background: radial-gradient(130% 90% at var(--gx) 0%, var(--flux-soft), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  pointer-events: none;
+}
+.disc-neural {
+  --gx: 0%;
+}
+.disc-web {
+  --gx: 100%;
+}
+
+.disc-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--flux-line);
+  box-shadow: var(--shadow-pop);
+}
+.disc-card:hover::after {
+  opacity: 1;
+}
+
+.disc-glyph {
+  position: absolute;
+  top: clamp(1rem, 2.5vw, 1.6rem);
+  right: clamp(1.2rem, 3vw, 2rem);
+  font-size: 2rem;
   line-height: 1;
   color: var(--mist);
-  transition: color 0.3s var(--ease);
+  transition: color 0.35s var(--ease), transform 0.35s var(--ease);
 }
-
-.stream-card:hover .stream-glyph {
+.disc-card:hover .disc-glyph {
   color: var(--flux);
+  transform: translateY(3px) scale(1.06);
 }
 
 .stream-tag {
@@ -389,7 +426,7 @@
   margin-bottom: 0.9rem;
 }
 
-.stream-card h3 {
+.disc-card h3 {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.6rem;
@@ -397,28 +434,88 @@
   margin-bottom: 0.7rem;
 }
 
-.stream-body {
+.disc-body {
   color: var(--graphite);
   max-width: 38ch;
   line-height: 1.6;
 }
 
-/* the two streams lean toward center as they arrive */
-.stream-left {
-  transform: translateX(-22px);
-}
-.stream-right {
-  transform: translateX(22px);
-}
-.stream-left.is-visible,
-.stream-right.is-visible {
-  transform: translateX(0);
+.disc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1.3rem 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* dark pinch panel */
-.pinch-panel {
+.disc-meta li {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--graphite);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--mist);
+  border-radius: var(--r-pill);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.disc-card:hover .disc-meta li {
+  color: var(--ink);
+  border-color: var(--flux-line);
+}
+
+/* the pinch node — where the two streams converge */
+.forge-pinch {
   position: relative;
-  margin-top: clamp(1rem, 2.5vw, 1.6rem);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  margin-block: clamp(2.5rem, 7vw, 5rem);
+  pointer-events: none;
+}
+
+.forge-pinch-ring {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--flux);
+  animation: pinchPulse 2.6s var(--ease) infinite;
+}
+.forge-pinch-ring::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--flux);
+}
+
+@keyframes pinchPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(240, 83, 28, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(240, 83, 28, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 83, 28, 0);
+  }
+}
+
+.forge-pinch-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--flux);
+}
+
+/* dark dispersal panel — the resolved, integrated output */
+.forge-panel {
+  position: relative;
+  z-index: 1;
   margin-inline: auto;
   width: min(680px, 100%);
   padding: clamp(2rem, 4vw, 3rem);
@@ -429,22 +526,22 @@
   overflow: hidden;
 }
 
-.pinch-panel::before {
+.forge-panel::before {
   content: '';
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
-  height: 40px;
+  height: 46px;
   background: linear-gradient(var(--flux), transparent);
 }
 
-.pinch-panel::after {
+.forge-panel::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(80% 60% at 50% 0%, rgba(240, 83, 28, 0.16), transparent 60%);
+  background: radial-gradient(80% 60% at 50% 0%, rgba(240, 83, 28, 0.18), transparent 60%);
   pointer-events: none;
 }
 
@@ -652,15 +749,22 @@
   transform: translateY(0);
 }
 
-/* streams override translateY with translateX above; keep opacity here */
-.stream-left,
-.stream-right {
+/* discipline cards lean toward the convergence axis as they arrive,
+   while keeping their hover transitions (higher specificity wins) */
+.forge-cards .disc-card.reveal {
   opacity: 0;
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease),
+    box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
 }
-.stream-left.is-visible,
-.stream-right.is-visible {
+.forge-cards .disc-neural.reveal {
+  transform: translate(-26px, 22px);
+}
+.forge-cards .disc-web.reveal {
+  transform: translate(26px, 22px);
+}
+.forge-cards .disc-card.reveal.is-visible {
   opacity: 1;
+  transform: translate(0, 0);
 }
 
 .stagger-1 { transition-delay: 0.05s; }
@@ -678,16 +782,19 @@
 }
 
 @media (max-width: 680px) {
-  .streams {
+  .forge-cards {
     grid-template-columns: 1fr;
+    gap: clamp(1.2rem, 4vw, 2rem);
   }
-  .stream-left,
-  .stream-right {
-    transform: translateY(20px);
+  .forge-cards .disc-neural.reveal,
+  .forge-cards .disc-web.reveal {
+    transform: translateY(22px);
   }
-  .stream-left.is-visible,
-  .stream-right.is-visible {
+  .forge-cards .disc-card.reveal.is-visible {
     transform: translateY(0);
+  }
+  .forge-pinch {
+    margin-block: clamp(1.8rem, 6vw, 3rem);
   }
   .hero-meta {
     grid-template-columns: 1fr;

@@ -171,6 +171,316 @@ function HeroField() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Convergence forge — the work section built AS the hourglass.         */
+/* Two discipline cards feed a live bit-stream that funnels down through */
+/* a pointer-reactive pinch node, then disperses into the dark           */
+/* "integrated delivery" panel. Hovering a discipline energizes its      */
+/* stream; the cursor magnetically draws bits near the pinch.            */
+/* ------------------------------------------------------------------ */
+function ConvergenceStage() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const leftRef = useRef<HTMLElement>(null)
+  const rightRef = useRef<HTMLElement>(null)
+  const pinchRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLElement>(null)
+
+  // Mutable interaction state — kept in a ref so the loop never re-renders.
+  const env = useRef({
+    leftT: 0, rightT: 0, left: 0, right: 0,
+    px: 0, py: 0, inside: false,
+  })
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const leftCard = leftRef.current
+    const rightCard = rightRef.current
+    const pinchEl = pinchRef.current
+    const panelEl = panelRef.current
+    const stage = stageRef.current
+    if (!canvas || !leftCard || !rightCard || !pinchEl || !panelEl || !stage) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const E = env.current
+
+    let w = 0
+    let h = 0
+    let dpr = 1
+    let raf = 0
+
+    type Pt = { x: number; y: number }
+    const geo = {
+      L: { x: 0, y: 0 } as Pt,
+      R: { x: 0, y: 0 } as Pt,
+      P: { x: 0, y: 0 } as Pt,
+      D: { x: 0, y: 0 } as Pt,
+      half: 0,
+    }
+
+    const rel = (el: HTMLElement) => {
+      const r = el.getBoundingClientRect()
+      const c = canvas.getBoundingClientRect()
+      return { left: r.left - c.left, top: r.top - c.top, width: r.width, height: r.height }
+    }
+
+    // Read the live DOM positions so the funnel always connects to the real
+    // cards/panel — including while they slide in on scroll-reveal.
+    const measure = () => {
+      const l = rel(leftCard)
+      const rg = rel(rightCard)
+      const p = rel(pinchEl)
+      const pn = rel(panelEl)
+      geo.L = { x: l.left + l.width / 2, y: l.top + l.height - 8 }
+      geo.R = { x: rg.left + rg.width / 2, y: rg.top + rg.height - 8 }
+      geo.P = { x: p.left + p.width / 2, y: p.top + p.height / 2 }
+      geo.D = { x: pn.left + pn.width / 2, y: pn.top + 10 }
+      geo.half = pn.width / 2
+    }
+
+    type Bit = { side: number; p: number; speed: number; lane: number; size: number; flux: boolean; rot: number }
+    const COUNT = 96
+    const rand = (a: number, b: number) => a + Math.random() * (b - a)
+    const mk = (side: number, init: boolean): Bit => ({
+      side,
+      p: init ? rand(0, 2) : rand(-0.18, 0),
+      speed: rand(0.0035, 0.0072),
+      lane: rand(-1, 1),
+      size: rand(2, 4.4),
+      flux: Math.random() < 0.18,
+      rot: rand(0, Math.PI),
+    })
+    const bits: Bit[] = []
+    for (let i = 0; i < COUNT; i++) bits.push(mk(i % 2 === 0 ? -1 : 1, true))
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+    const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
+    const qbez = (a: Pt, c: Pt, b: Pt, t: number): Pt => {
+      const m = 1 - t
+      return {
+        x: m * m * a.x + 2 * m * t * c.x + t * t * b.x,
+        y: m * m * a.y + 2 * m * t * c.y + t * t * b.y,
+      }
+    }
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect()
+      w = rect.width
+      h = rect.height
+      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      measure()
+    }
+
+    // a faint funnel guide line that lights to flux as its stream energizes
+    const guide = (start: Pt, energy: number) => {
+      const P = geo.P
+      const cx = P.x
+      const cy = start.y
+      ctx.beginPath()
+      ctx.moveTo(start.x, start.y)
+      ctx.quadraticCurveTo(cx, cy, P.x, P.y)
+      ctx.strokeStyle = 'rgba(226,229,225,0.85)'
+      ctx.lineWidth = 1
+      ctx.stroke()
+      if (energy > 0.01) {
+        ctx.beginPath()
+        ctx.moveTo(start.x, start.y)
+        ctx.quadraticCurveTo(cx, cy, P.x, P.y)
+        ctx.strokeStyle = `rgba(240,83,28,${(energy * 0.6).toFixed(3)})`
+        ctx.lineWidth = 1.4
+        ctx.stroke()
+      }
+    }
+
+    const draw = () => {
+      measure()
+      ctx.clearRect(0, 0, w, h)
+
+      E.left = lerp(E.left, E.leftT, 0.08)
+      E.right = lerp(E.right, E.rightT, 0.08)
+
+      const P = geo.P
+      const pinchDist = Math.hypot(E.px - P.x, E.py - P.y)
+      const pointerGlow = E.inside ? Math.max(0, 1 - pinchDist / (Math.max(w, h) * 0.45)) : 0
+      const glowE = Math.min(1, 0.16 + (E.left + E.right) * 0.55 + pointerGlow * 0.6)
+
+      // pinch glow
+      const rad = Math.max(40, w * 0.1) * (0.8 + glowE * 0.95)
+      const g = ctx.createRadialGradient(P.x, P.y, 0, P.x, P.y, rad)
+      g.addColorStop(0, `rgba(240,83,28,${(0.05 + glowE * 0.22).toFixed(3)})`)
+      g.addColorStop(1, 'rgba(240,83,28,0)')
+      ctx.fillStyle = g
+      ctx.fillRect(0, 0, w, h)
+
+      guide(geo.L, E.left)
+      guide(geo.R, E.right)
+
+      // dispersal axis from pinch down to the panel
+      ctx.beginPath()
+      ctx.moveTo(P.x, P.y)
+      ctx.lineTo(geo.D.x, geo.D.y)
+      ctx.strokeStyle = 'rgba(226,229,225,0.85)'
+      ctx.lineWidth = 1
+      ctx.stroke()
+
+      for (const b of bits) {
+        const sideE = b.side < 0 ? E.left : E.right
+        const start = b.side < 0 ? geo.L : geo.R
+        if (!reduce) b.p += b.speed * (1 + sideE * 1.1)
+        if (b.p > 2) Object.assign(b, mk(b.side, false))
+        if (b.p < 0) continue
+
+        let pos: Pt
+        let alpha: number
+        if (b.p < 1) {
+          // phase A: stream funnels inward to the pinch
+          const t = clamp01(b.p)
+          pos = qbez(start, { x: P.x, y: start.y }, P, t)
+          pos.x += b.lane * 12 * (1 - t)
+          alpha = 0.1 + 0.52 * t * t
+        } else {
+          // phase B: disperse from the pinch into the panel, fading out
+          const t = clamp01(b.p - 1)
+          const target = { x: geo.D.x + b.lane * geo.half * 0.78, y: geo.D.y + 6 }
+          pos = qbez(P, { x: P.x, y: lerp(P.y, target.y, 0.45) }, target, t)
+          alpha = 0.55 * (1 - t)
+        }
+
+        // cursor magnetism near the pinch
+        if (E.inside) {
+          const dx = E.px - pos.x
+          const dy = E.py - pos.y
+          const d = Math.hypot(dx, dy)
+          const R = 120
+          if (d < R) {
+            const pull = (1 - d / R) * 0.45
+            pos.x += dx * pull
+            pos.y += dy * pull
+            alpha = Math.min(0.9, alpha + pull * 0.4)
+          }
+        }
+
+        const lit = b.flux || sideE > 0.4
+        ctx.fillStyle = lit
+          ? `rgba(240,83,28,${alpha.toFixed(3)})`
+          : `rgba(12,13,14,${(alpha * 0.8).toFixed(3)})`
+        const s = b.size * (1 + sideE * 0.3)
+        ctx.save()
+        ctx.translate(pos.x, pos.y)
+        ctx.rotate(b.rot)
+        ctx.fillRect(-s / 2, -s / 2, s, s)
+        ctx.restore()
+        b.rot += 0.01
+      }
+    }
+
+    const step = () => {
+      draw()
+      raf = requestAnimationFrame(step)
+    }
+
+    const onMove = (e: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect()
+      E.px = e.clientX - rect.left
+      E.py = e.clientY - rect.top
+      E.inside = true
+    }
+    const onLeave = () => {
+      E.inside = false
+    }
+
+    resize()
+    window.addEventListener('resize', resize)
+    stage.addEventListener('pointermove', onMove)
+    stage.addEventListener('pointerleave', onLeave)
+
+    if (reduce) {
+      draw()
+    } else {
+      raf = requestAnimationFrame(step)
+    }
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', resize)
+      stage.removeEventListener('pointermove', onMove)
+      stage.removeEventListener('pointerleave', onLeave)
+    }
+  }, [])
+
+  const energize = (side: 'left' | 'right', on: boolean) => {
+    if (side === 'left') env.current.leftT = on ? 1 : 0
+    else env.current.rightT = on ? 1 : 0
+  }
+
+  return (
+    <div className="forge-stage" ref={stageRef}>
+      <canvas ref={canvasRef} className="forge-canvas" aria-hidden="true" />
+
+      <div className="forge-cards">
+        <article
+          ref={leftRef}
+          className="disc-card disc-neural reveal"
+          onMouseEnter={() => energize('left', true)}
+          onMouseLeave={() => energize('left', false)}
+        >
+          <span className="disc-glyph" aria-hidden="true">▽</span>
+          <p className="stream-tag">neural</p>
+          <h3>Neural systems</h3>
+          <p className="disc-body">
+            Model-backed features, inference workflows, and experimentation
+            pipelines built to run inside real products — not demos.
+          </p>
+          <ul className="disc-meta">
+            <li>inference</li>
+            <li>pipelines</li>
+            <li>evaluation</li>
+          </ul>
+        </article>
+
+        <article
+          ref={rightRef}
+          className="disc-card disc-web reveal"
+          onMouseEnter={() => energize('right', true)}
+          onMouseLeave={() => energize('right', false)}
+        >
+          <span className="disc-glyph" aria-hidden="true">△</span>
+          <p className="stream-tag">web</p>
+          <h3>Web engineering</h3>
+          <p className="disc-body">
+            High-performance interfaces, API-connected apps, and developer
+            tooling that stays clear and maintainable as it grows.
+          </p>
+          <ul className="disc-meta">
+            <li>interfaces</li>
+            <li>apis</li>
+            <li>tooling</li>
+          </ul>
+        </article>
+      </div>
+
+      <div className="forge-pinch" ref={pinchRef} aria-hidden="true">
+        <span className="forge-pinch-ring" />
+        <span className="forge-pinch-label">// convergence</span>
+      </div>
+
+      <article className="forge-panel reveal" ref={panelRef}>
+        <p className="stream-tag pinch-tag">where they meet</p>
+        <h3 className="pinch-title">Integrated delivery</h3>
+        <p className="pinch-body">
+          The two streams resolve into one product: machine intelligence wired to
+          strong UX, deliberate from architecture down to the last interaction.
+        </p>
+      </article>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 
 const TEAM = [
   { name: 'Cookiemonster', role: 'head developer', href: 'https://github.com/btfcookies', handle: 'btfcookies' },
@@ -261,36 +571,7 @@ function App() {
             <h2>Two disciplines,<br />one point of convergence.</h2>
           </div>
 
-          <div className="streams">
-            <article className="stream-card stream-left reveal">
-              <span className="stream-glyph" aria-hidden="true">▽</span>
-              <p className="stream-tag">neural</p>
-              <h3>Neural systems</h3>
-              <p className="stream-body">
-                Model-backed features, inference workflows, and experimentation
-                pipelines built to run inside real products — not demos.
-              </p>
-            </article>
-
-            <article className="stream-card stream-right reveal">
-              <span className="stream-glyph" aria-hidden="true">△</span>
-              <p className="stream-tag">web</p>
-              <h3>Web engineering</h3>
-              <p className="stream-body">
-                High-performance interfaces, API-connected apps, and developer
-                tooling that stays clear and maintainable as it grows.
-              </p>
-            </article>
-          </div>
-
-          <article className="pinch-panel reveal">
-            <p className="stream-tag pinch-tag">where they meet</p>
-            <h3 className="pinch-title">Integrated delivery</h3>
-            <p className="pinch-body">
-              The two streams resolve into one product: machine intelligence wired to
-              strong UX, deliberate from architecture down to the last interaction.
-            </p>
-          </article>
+          <ConvergenceStage />
         </section>
 
         <PinchDivider />
