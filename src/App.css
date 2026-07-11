@@ -170,6 +170,15 @@
 .hero-inner {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.hero-copy {
+  flex: 1;
+  min-width: 0;
 }
 
 .hero-title {
@@ -205,6 +214,51 @@
 .h-in-2 { animation-delay: 0.14s; }
 .h-in-3 { animation-delay: 0.26s; }
 .h-in-4 { animation-delay: 0.38s; }
+.h-in-5 { animation-delay: 0.52s; }
+
+/* ----------------------- glyph display (chr out) ------------------- */
+/* The register's output device: a flip-dot wall on the hero's right
+   that renders reg a's current character. Lit dots are volt — logic
+   high — and each repaint sweeps diagonally via per-dot delays. */
+
+.glyph-display {
+  margin: 0;
+  flex: none;
+}
+
+.glyph-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 5px;
+  width: clamp(240px, 27vw, 330px);
+}
+
+.glyph-dot {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--line);
+  opacity: 0.45;
+  transition: background 0.3s var(--ease), opacity 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.glyph-dot.on {
+  background: var(--volt);
+  opacity: 1;
+  box-shadow: 0 0 12px -3px var(--volt-glow);
+}
+
+.glyph-label {
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 0.58rem;
+}
+
+@media (max-width: 960px) {
+  .glyph-display {
+    display: none;
+  }
+}
 
 /* ---------------------------- byte register ----------------------- */
 

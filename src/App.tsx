@@ -127,7 +127,7 @@ const toBits = (code: number): boolean[] =>
     .split('')
     .map((c) => c === '1')
 
-function ByteRegister() {
+function ByteRegister({ onCode }: { onCode?: (code: number) => void }) {
   const [bits, setBits] = useState<boolean[]>(() => toBits(MESSAGE.charCodeAt(0)))
   const [manual, setManual] = useState(false)
   const manualUntil = useRef(0)
@@ -151,6 +151,11 @@ function ByteRegister() {
   }
 
   const code = bits.reduce((acc, b, i) => acc | (b ? 1 << (7 - i) : 0), 0)
+
+  useEffect(() => {
+    onCode?.(code)
+  }, [code, onCode])
+
   const bin = bits.map((b) => (b ? '1' : '0')).join('')
   const hex = `0x${code.toString(16).padStart(2, '0').toUpperCase()}`
   const chr = code === 32 ? '␣' : code > 32 && code < 127 ? String.fromCharCode(code) : '·'
@@ -203,6 +208,131 @@ function ByteRegister() {
 }
 
 /* ------------------------------------------------------------------ */
+/* GlyphDisplay — the register's output device. A 12×12 flip-dot wall   */
+/* renders whatever character reg a currently holds, at poster scale.   */
+/* Glyphs are sampled live from the site's own pixel face (Silkscreen)  */
+/* via an offscreen canvas, so the wall speaks the same 8-bit voice.    */
+/* Volt dots = logic high; every change repaints in a diagonal sweep    */
+/* like a real flip-dot panel.                                          */
+/* ------------------------------------------------------------------ */
+const DOT_GRID = 12
+const DOT_BLANK: boolean[] = new Array(DOT_GRID * DOT_GRID).fill(false)
+const glyphCache = new Map<string, boolean[]>()
+
+/* one dot = one Silkscreen font pixel, in canvas px */
+const SILK_UNIT = 10
+
+/* Silkscreen fingerprint: it is the only face in the stack whose caps
+   AND x-height both measure exactly 5/8 em. True only once the canvas
+   can really draw with it (which can lag document.fonts readiness). */
+function silkscreenLive(ctx: CanvasRenderingContext2D): boolean {
+  ctx.font = `400 ${SILK_UNIT * 8}px Silkscreen, ui-monospace, monospace`
+  const asc = (s: string) => ctx.measureText(s).actualBoundingBoxAscent
+  return Math.abs(asc('E') - SILK_UNIT * 5) < 1 && Math.abs(asc('x') - SILK_UNIT * 5) < 1
+}
+
+function sampleGlyph(chr: string): boolean[] {
+  if (!chr) return DOT_BLANK
+  /* weight 400 is Silkscreen's true single-pixel-stroke cut — 700
+     doubles stroke width and fills the counters of wide glyphs */
+  const font = (px: number) => `400 ${px}px Silkscreen, ui-monospace, monospace`
+
+  const cell = SILK_UNIT
+  const size = DOT_GRID * cell
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })
+  if (!ctx) return DOT_BLANK
+
+  ctx.textBaseline = 'alphabetic'
+
+  /* never cache a fallback-face render — it would stick forever */
+  const silkReady = silkscreenLive(ctx)
+  const cached = silkReady ? glyphCache.get(chr) : undefined
+  if (cached) return cached
+  ctx.font = font(cell * 8)
+
+  /* Silkscreen draws on an 8-unit em grid: caps 5 units, no descenders,
+     so at font-size 8×cell one font pixel is exactly one dot. Render at
+     2×2 dots per font pixel (poster scale) when the glyph fits, and pin
+     the font's pixel grid to the dot grid so counters never smear. */
+  const probe = ctx.measureText(chr)
+  const probeCells = Math.max(1, Math.round((probe.actualBoundingBoxLeft + probe.actualBoundingBoxRight) / cell))
+  const scale = probeCells * 2 <= DOT_GRID ? 2 : 1
+  ctx.font = font(cell * 8 * scale)
+  const m = ctx.measureText(chr)
+  const wCells = Math.max(1, Math.round((m.actualBoundingBoxLeft + m.actualBoundingBoxRight) / cell))
+  const startCol = Math.max(0, Math.floor((DOT_GRID - wCells) / 2))
+  const baselineRow = scale === 2 ? 11 : 8
+  ctx.fillText(chr, startCol * cell + m.actualBoundingBoxLeft, baselineRow * cell)
+
+  const { data } = ctx.getImageData(0, 0, size, size)
+  const dots: boolean[] = []
+  for (let gy = 0; gy < DOT_GRID; gy++) {
+    for (let gx = 0; gx < DOT_GRID; gx++) {
+      let lit = 0
+      for (let y = gy * cell; y < (gy + 1) * cell; y++) {
+        for (let x = gx * cell; x < (gx + 1) * cell; x++) {
+          if (data[(y * size + x) * 4 + 3] > 128) lit++
+        }
+      }
+      dots.push(lit / (cell * cell) > 0.5)
+    }
+  }
+  if (silkReady) glyphCache.set(chr, dots)
+  return dots
+}
+
+if (import.meta.env.DEV) {
+  // debug hook so tooling can inspect exactly what the wall renders
+  ;(window as unknown as Record<string, unknown>).__sampleGlyph = sampleGlyph
+}
+
+function GlyphDisplay({ code }: { code: number }) {
+  const [fontReady, setFontReady] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    let raf = 0
+    const ctx = document.createElement('canvas').getContext('2d')
+    /* canvas can lag document.fonts by a few frames — poll the
+       fingerprint until the face is really drawable, then resample */
+    const tick = () => {
+      if (!alive || !ctx) return
+      if (silkscreenLive(ctx)) setFontReady(true)
+      else raf = requestAnimationFrame(tick)
+    }
+    document.fonts
+      .load('400 80px Silkscreen')
+      .then(tick)
+      .catch(() => {})
+    return () => {
+      alive = false
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  const chr = code === 32 ? '' : code > 32 && code < 127 ? String.fromCharCode(code) : '·'
+  const dots = useMemo(() => sampleGlyph(chr), [chr, fontReady]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <figure className="glyph-display h-in h-in-5" aria-hidden="true">
+      <div className="glyph-grid">
+        {dots.map((on, i) => (
+          <span
+            key={i}
+            className={`glyph-dot${on ? ' on' : ''}`}
+            style={{ '--d': `${((i % DOT_GRID) + Math.floor(i / DOT_GRID)) * 16}ms` } as CSSProperties}
+          />
+        ))}
+      </div>
+      <figcaption className="pix glyph-label">chr out — dot matrix</figcaption>
+    </figure>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 
 const CAPS = [
   {
@@ -251,6 +381,7 @@ function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
 
 function App() {
   const heroRef = useRef<HTMLElement>(null)
+  const [heroCode, setHeroCode] = useState(() => MESSAGE.charCodeAt(0))
 
   /* Rasterize — the page-wide scroll animation. Every .rz element's
      visibility is scrubbed directly by scroll position: it materializes
@@ -331,23 +462,27 @@ function App() {
         {/* ----------------------------- HERO ----------------------------- */}
         <section className="hero" ref={heroRef} onPointerMove={onHeroPointer}>
           <div className="wrap hero-inner">
-            <p className="pix eyebrow h-in h-in-1">8 bits · 1 byte · 5 engineers</p>
-            <h1 className="hero-title h-in h-in-2">
-              Every bit<br />engineered<span className="volt-txt">.</span>
-            </h1>
-            <p className="lead hero-lead h-in h-in-3">
-              Eightbit Labs is a five-person studio building neural systems and the
-              web platforms that carry them — precise from the first byte to production.
-            </p>
-            <div className="cta-row h-in h-in-4">
-              <a className="btn btn-primary" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
-                Explore our GitHub
-                <ArrowIcon />
-              </a>
-              <a className="btn btn-ghost" href="#work">See the work</a>
+            <div className="hero-copy">
+              <p className="pix eyebrow h-in h-in-1">8 bits · 1 byte · 5 engineers</p>
+              <h1 className="hero-title h-in h-in-2">
+                Every bit<br />engineered<span className="volt-txt">.</span>
+              </h1>
+              <p className="lead hero-lead h-in h-in-3">
+                Eightbit Labs is a five-person studio building neural systems and the
+                web platforms that carry them — precise from the first byte to production.
+              </p>
+              <div className="cta-row h-in h-in-4">
+                <a className="btn btn-primary" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
+                  Explore our GitHub
+                  <ArrowIcon />
+                </a>
+                <a className="btn btn-ghost" href="#work">See the work</a>
+              </div>
+
+              <ByteRegister onCode={setHeroCode} />
             </div>
 
-            <ByteRegister />
+            <GlyphDisplay code={heroCode} />
           </div>
         </section>
 

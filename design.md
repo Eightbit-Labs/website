@@ -85,6 +85,8 @@ Single column, max `1140px`. Sections: hero (paper) → work band (white, hairli
 
 Eight physical flip-dot keys (3D rotateX flip, staggered 42ms cascade) auto-type `eightbit labs` in ASCII, one char every 1.4s, with a live BIN/HEX/CHR readout and place-value labels. **Clicking any key flips that bit and takes the register manual for 7s** (status line switches to `REG A — MANUAL INPUT`), so visitors can compose their own byte and see what character they made. Reduced motion: no auto-typing, keys still clickable.
 
+**The register's output device (added 2026-07-11):** a 12×12 flip-dot wall on the hero's right (`chr out — dot matrix`) renders reg a's current character at poster scale — input bottom-left, output bottom-right. Glyphs are sampled from Silkscreen itself via an offscreen canvas, with the font's 8-unit pixel grid pinned exactly to the dot grid (1 font pixel = 2×2 dots, falling back to 1×1 for wide glyphs) so counters never smear. Weight 400 only — 700 doubles stroke width and fills counters. A metrics fingerprint (caps = x-height = 5/8 em) guards the cache, because canvas can render a fallback face for a few frames after `document.fonts` reports loaded. Lit dots are volt (logic high); each repaint sweeps diagonally via per-dot transition delays. Hidden below 960px.
+
 Supporting pixel cast (all data-true):
 - **8×8 capability sprites** — hand-drawn chip / browser / rocket, hop 2 steps on hover.
 - **Team identicons** — deterministic 8×8 mirrored sprites hashed from each GitHub handle (FNV-1a + xorshift).
@@ -125,3 +127,4 @@ Plain, confident, a little bit-punny but never cute twice in a row.
 
 - **Pass 1 — "Convergence" (superseded):** page built as the hourglass logo. Cool white `#F5F6F4`, orange Flux `#F0531C`, Bricolage Grotesque + Hanken Grotesk + JetBrains Mono, canvas bit-stream funneling to a pinch, pinch dividers, dark "integrated delivery" panel. Don't reuse these faces/accent in future remakes.
 - **Pass 2 — "The Byte" (current, 2026-07-10):** described above. If a pass 3 is ever asked for, the unexplored angles noted were: flip-dot display wall rendering glyphs, Bayer-dither halftone imagery, and a dark "terminal phosphor" theme (was out of scope — brief required light).
+- **Pass 2.1 (2026-07-11):** hero's empty right half filled by cashing in the "flip-dot display wall" angle from the pass-2 notes — as the byte register's chr-out device rather than a separate widget (same lesson as the cut program-counter pill: animate the page's own system, don't add gadgets). Remaining unexplored: Bayer-dither halftone imagery, dark phosphor theme. Also: all rounded rectangles became squircles via `corner-shape: squircle` (Chromium 139+, falls back to round).
