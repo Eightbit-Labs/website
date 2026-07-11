@@ -331,72 +331,6 @@
   animation: blink 1.1s steps(1) infinite;
 }
 
-/* ------------------------- scroll register ------------------------ */
-/* the program counter: scroll position as a live 8-bit counter */
-
-.pc {
-  position: fixed;
-  right: 1.1rem;
-  bottom: 1.1rem;
-  z-index: 50;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.9rem;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-}
-
-.pc:hover {
-  border-color: var(--volt);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-pop);
-}
-
-.pc-label {
-  font-size: 0.58rem;
-  color: var(--slate);
-}
-
-.pc-bits {
-  display: inline-flex;
-  gap: 3px;
-}
-
-.pc-bit {
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
-}
-
-.pc-bit.on {
-  background: var(--ink);
-  border-color: var(--ink);
-}
-
-.pc-hex {
-  font-size: 0.58rem;
-  min-width: 4ch;
-  text-align: left;
-}
-
-/* end of file: all eight bits light volt */
-.pc-eof .pc-bit.on {
-  background: var(--volt);
-  border-color: var(--volt);
-}
-
-.pc-eof .pc-hex {
-  color: var(--volt);
-}
-
 /* ----------------------------- buttons ---------------------------- */
 
 .btn {
@@ -716,24 +650,36 @@
   flex-wrap: wrap;
 }
 
-/* ---------------------------- scroll reveal ----------------------- */
+/* --------------------- rasterize (scroll scrub) -------------------- */
+/* --p (0..1, quantized to 8ths) is set per element from scroll
+   position. The halftone mask's dots grow from nothing until they
+   merge into a solid surface — the element materializes pixel-first,
+   and de-rezzes the same way when scrolled back. No transitions:
+   the discrete snap between steps IS the effect. */
 
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+.rz {
+  --p: 0;
+  transform: translateY(calc((1 - var(--p)) * 36px));
+  -webkit-mask-image: radial-gradient(
+    circle,
+    #000 calc(var(--p) * 100%),
+    transparent calc(var(--p) * 100% + 1%)
+  );
+  -webkit-mask-size: 9px 9px;
+  mask-image: radial-gradient(
+    circle,
+    #000 calc(var(--p) * 100%),
+    transparent calc(var(--p) * 100% + 1%)
+  );
+  mask-size: 9px 9px;
 }
 
-.reveal.is-visible {
-  opacity: 1;
+/* fully materialized: drop the mask so shadows/brackets render crisp */
+.rz.rz-done {
   transform: none;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
-
-.stagger-1 { transition-delay: 0s; }
-.stagger-2 { transition-delay: 0.08s; }
-.stagger-3 { transition-delay: 0.16s; }
-.stagger-4 { transition-delay: 0.24s; }
-.stagger-5 { transition-delay: 0.32s; }
 
 /* ---------------------------- responsive -------------------------- */
 
@@ -757,10 +703,6 @@
   }
 
   .nav-links a:not(.nav-gh) {
-    display: none;
-  }
-
-  .pc {
     display: none;
   }
 }
@@ -789,9 +731,11 @@
     animation: none;
   }
 
-  .reveal {
-    opacity: 1;
+  .rz {
+    --p: 1;
     transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .hero::after {

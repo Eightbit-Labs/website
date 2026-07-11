@@ -203,66 +203,6 @@ function ByteRegister() {
 }
 
 /* ------------------------------------------------------------------ */
-/* ScrollRegister — the program counter. Scroll position rendered as a  */
-/* live 8-bit counter: top of page is 0x00, bottom is 0xFF. Low bits    */
-/* flicker, high bits march, and the bottom of the page reads EOF.      */
-/* Click to jump back to 0x00.                                          */
-/* ------------------------------------------------------------------ */
-function ScrollRegister() {
-  const [value, setValue] = useState(0)
-
-  useEffect(() => {
-    let raf = 0
-    const update = () => {
-      raf = 0
-      const doc = document.documentElement
-      const max = doc.scrollHeight - window.innerHeight
-      const v = max > 0 ? Math.round((window.scrollY / max) * 255) : 0
-      setValue((prev) => (prev === v ? prev : v))
-    }
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [])
-
-  const bits = toBits(value)
-  const hex = `0x${value.toString(16).padStart(2, '0').toUpperCase()}`
-  const eof = value === 255
-
-  return (
-    <button
-      type="button"
-      className={`pc${eof ? ' pc-eof' : ''}`}
-      aria-label={`Page position ${value} of 255 — back to top`}
-      onClick={() =>
-        window.scrollTo({
-          top: 0,
-          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        })
-      }
-    >
-      <span className="pix pc-label">pc</span>
-      <span className="pc-bits" aria-hidden="true">
-        {bits.map((b, i) => (
-          <span key={i} className={`pc-bit${b ? ' on' : ''}`} />
-        ))}
-      </span>
-      <span className="pix pc-hex" aria-hidden="true">
-        {eof ? 'eof' : hex}
-      </span>
-    </button>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 
 const CAPS = [
   {
@@ -289,11 +229,11 @@ const TEAM = [
   { name: 'Mr_Dragon0011', role: 'developer', href: 'https://github.com/MrDragon0011', handle: 'MrDragon0011' },
 ]
 
-function TeamCard({ member, index }: { member: (typeof TEAM)[number]; index: number }) {
+function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
   const rows = useMemo(() => identiconRows(member.handle), [member.handle])
   return (
     <a
-      className={`team-card card reveal stagger-${(index % 5) + 1}`}
+      className="team-card card rz"
       href={member.href}
       target="_blank"
       rel="noreferrer"
@@ -312,27 +252,54 @@ function TeamCard({ member, index }: { member: (typeof TEAM)[number]; index: num
 function App() {
   const heroRef = useRef<HTMLElement>(null)
 
+  /* Rasterize — the page-wide scroll animation. Every .rz element's
+     visibility is scrubbed directly by scroll position: it materializes
+     through a growing-dot halftone mask as it rises from the fold, and
+     de-rezzes again if you scroll back. Progress is quantized to 8
+     discrete steps, so the whole page snaps in and out like an 8-bit
+     sprite loading. The fixed dot raster behind the page ticks along
+     in half-cell steps via --raster-y. */
   useEffect(() => {
-    const items = document.querySelectorAll<HTMLElement>('.reveal')
-    if (items.length === 0) return
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.rz'))
+    const root = document.documentElement
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach((i) => i.classList.add('is-visible'))
+      els.forEach((el) => {
+        el.style.setProperty('--p', '1')
+        el.classList.add('rz-done')
+      })
       return
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return
-          e.target.classList.add('is-visible')
-          io.unobserve(e.target)
-        })
-      },
-      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' },
-    )
-    items.forEach((i) => io.observe(i))
-    return () => io.disconnect()
+    const STEPS = 8
+    let raf = 0
+
+    const update = () => {
+      raf = 0
+      const vh = window.innerHeight
+      root.style.setProperty('--raster-y', `${Math.round(window.scrollY / 26) * 13}px`)
+      for (const el of els) {
+        const top = el.getBoundingClientRect().top
+        // materialize across the bottom 38% of the viewport
+        const p = Math.max(0, Math.min(1, (vh - top) / (vh * 0.38)))
+        const q = Math.round(p * STEPS) / STEPS
+        el.style.setProperty('--p', q.toFixed(3))
+        el.classList.toggle('rz-done', q === 1)
+      }
+    }
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   const onHeroPointer = (e: ReactPointerEvent<HTMLElement>) => {
@@ -387,14 +354,14 @@ function App() {
         {/* -------------------------- CAPABILITIES ------------------------ */}
         <section className="band" id="work">
           <div className="wrap">
-            <div className="section-head reveal">
+            <div className="section-head rz">
               <p className="pix eyebrow">what we build</p>
               <h2>Two crafts, one stack.</h2>
             </div>
 
             <div className="caps-grid">
-              {CAPS.map((c, i) => (
-                <article key={c.tag} className={`cap-card card reveal stagger-${i + 1}`}>
+              {CAPS.map((c) => (
+                <article key={c.tag} className="cap-card card rz">
                   <PixelSprite rows={c.sprite} className="cap-sprite" />
                   <p className="pix cap-tag">{c.tag}</p>
                   <h3>{c.title}</h3>
@@ -407,7 +374,7 @@ function App() {
                 </article>
               ))}
 
-              <article className="cap-card cap-wide card reveal stagger-3">
+              <article className="cap-card cap-wide card rz">
                 <PixelSprite rows={SPRITE_SHIP} className="cap-sprite" />
                 <div className="cap-wide-copy">
                   <p className="pix cap-tag">neural + web</p>
@@ -426,7 +393,7 @@ function App() {
         {/* ------------------------------ TEAM ---------------------------- */}
         <section className="team" id="team">
           <div className="wrap">
-            <div className="section-head team-head reveal">
+            <div className="section-head team-head rz">
               <div>
                 <p className="pix eyebrow">the team</p>
                 <h2>Five people. Full stack.</h2>
@@ -435,8 +402,8 @@ function App() {
             </div>
 
             <div className="team-grid">
-              {TEAM.map((m, i) => (
-                <TeamCard key={m.handle} member={m} index={i} />
+              {TEAM.map((m) => (
+                <TeamCard key={m.handle} member={m} />
               ))}
             </div>
           </div>
@@ -444,7 +411,7 @@ function App() {
 
         {/* ------------------------------ CTA ----------------------------- */}
         <section className="cta">
-          <div className="wrap cta-inner reveal">
+          <div className="wrap cta-inner rz">
             <LogoMark className="cta-mark" />
             <h2>Read the source.</h2>
             <p className="lead cta-lead">
@@ -459,8 +426,6 @@ function App() {
           </div>
         </section>
       </main>
-
-      <ScrollRegister />
 
       <footer className="footer">
         <div className="wrap footer-inner">

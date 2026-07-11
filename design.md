@@ -96,8 +96,8 @@ Supporting pixel cast (all data-true):
 - **Load:** hero cascade (eyebrow → headline → lead → CTAs), then keys pop in left-to-right.
 - **Ambient:** only the register typing + blinking cursor block. Nothing else self-animates.
 - **Pointer:** volt radial wash follows the cursor through the hero (CSS vars, no rAF).
-- **Scroll:** rise-and-fade reveals via IntersectionObserver, staggered per grid.
-- **Scroll signature — the program counter (`PC`):** a fixed pill (bottom-right, ≥720px) renders scroll position as a live 8-bit counter, `0x00` at top to `0xFF` at bottom. Low bits flicker, high bits march — a real binary counter driven by real data. At the bottom all eight bits light volt and the readout switches to `EOF`. Click jumps back to `0x00` (respects reduced motion).
+- **Scroll — "rasterize" (page-wide, scrubbed):** every section, card, and heading materializes through a growing-dot halftone mask as it rises from the fold, driven directly by scroll position — scroll back and it de-rezzes again. Progress is quantized to 8 discrete steps with no transitions: the snap between steps is the effect (an 8-bit sprite loading, not a fade). At full progress the mask is dropped (`rz-done`) so shadows and hover brackets render crisp. The fixed dot raster behind the page ticks forward in half-cell (13px) quanta as you scroll, so the whole surface participates. One rAF-throttled scroll listener drives everything via CSS custom properties (`--p` per element, `--raster-y` on `:root`).
+  - *Tried and replaced (2026-07-10):* a fixed "program counter" pill showing scroll position as an 8-bit counter — cut because it was a separate widget rather than an animation of the page itself.
 - **Hover micro:** cards lift + volt pixel corner-brackets snap in; sprites hop in 2 steps and go volt; buttons fill volt; nav links draw a volt underline.
 - All frozen under `prefers-reduced-motion` (global kill + per-component fallbacks).
 

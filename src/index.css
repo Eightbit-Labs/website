@@ -49,6 +49,17 @@
   box-sizing: border-box;
 }
 
+/* squircle corners — every border-radius on the site renders as a
+   superellipse where supported (Chromium 139+); elsewhere it falls
+   back to the plain rounded rectangle. */
+@supports (corner-shape: squircle) {
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -61,7 +72,9 @@ body {
   overflow-x: hidden;
 }
 
-/* faint dot raster over the whole page — the pixel grid the site lives on */
+/* faint dot raster over the whole page — the pixel grid the site lives
+   on. --raster-y is set from scroll position in half-cell (13px)
+   quanta, so the grid ticks forward as the page scrolls. */
 body::before {
   content: '';
   position: fixed;
@@ -70,6 +83,7 @@ body::before {
   pointer-events: none;
   background-image: radial-gradient(var(--line) 1px, transparent 1.4px);
   background-size: 26px 26px;
+  background-position: 0 calc(var(--raster-y, 0px) * -1);
   opacity: 0.55;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
   mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
