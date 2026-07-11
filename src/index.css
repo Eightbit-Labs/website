@@ -1,36 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700&family=Silkscreen:wght@400;700&display=swap');
 
 :root {
-  /* color */
-  --paper: #f5f6f4;
-  --bright: #fcfdfb;
-  --ink: #0c0d0e;
-  --graphite: #5a5e60;
-  --mist: #e2e5e1;
-  --pinch: #101216;
-  --flux: #f0531c;
-  --flux-soft: rgba(240, 83, 28, 0.12);
-  --flux-line: rgba(240, 83, 28, 0.42);
+  /* color — porcelain light, one volt accent for "logic high" */
+  --paper: #f3f5fa;
+  --card: #ffffff;
+  --ink: #0d1017;
+  --slate: #5a6478;
+  --line: #dde3f0;
+  --volt: #2b4bff;
+  --volt-soft: rgba(43, 75, 255, 0.09);
+  --volt-glow: rgba(43, 75, 255, 0.32);
 
   /* type */
-  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
-  --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Unbounded', system-ui, -apple-system, sans-serif;
+  --font-body: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
+  --font-pixel: 'Silkscreen', ui-monospace, monospace;
 
   /* space */
-  --col-max: 1180px;
+  --col-max: 1140px;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --section-y: clamp(6rem, 12vh, 9rem);
+  --section-y: clamp(5.5rem, 11vh, 8.5rem);
 
   /* radius */
-  --r-sm: 6px;
-  --r-md: 12px;
-  --r-lg: 20px;
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
   --r-pill: 999px;
 
   /* shadow */
-  --shadow-card: 0 1px 2px rgba(12, 13, 14, 0.04), 0 12px 32px -12px rgba(12, 13, 14, 0.12);
-  --shadow-pop: 0 2px 6px rgba(12, 13, 14, 0.06), 0 24px 60px -20px rgba(12, 13, 14, 0.22);
+  --shadow-card: 0 1px 2px rgba(13, 16, 23, 0.04), 0 14px 34px -14px rgba(13, 16, 23, 0.12);
+  --shadow-pop: 0 2px 6px rgba(13, 16, 23, 0.05), 0 26px 60px -22px rgba(13, 16, 23, 0.2);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -62,16 +61,18 @@ body {
   overflow-x: hidden;
 }
 
-/* faint convergence-axis tint behind everything */
+/* faint dot raster over the whole page — the pixel grid the site lives on */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(120% 60% at 50% -8%, rgba(240, 83, 28, 0.05), transparent 60%),
-    linear-gradient(180deg, var(--bright), var(--paper) 22%);
+  background-image: radial-gradient(var(--line) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
 }
 
 a {
@@ -93,6 +94,7 @@ h3,
 p,
 dl,
 dd,
+ul,
 figure {
   margin: 0;
 }
@@ -100,23 +102,26 @@ figure {
 h1,
 h2 {
   font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
   color: var(--ink);
 }
 
-h2 {
+h1 {
   font-weight: 700;
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.015em;
   line-height: 1.05;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  letter-spacing: -0.01em;
+  line-height: 1.12;
 }
 
 h3 {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--ink);
@@ -127,18 +132,32 @@ p {
 }
 
 :focus-visible {
-  outline: 2px solid var(--flux);
+  outline: 2px solid var(--volt);
   outline-offset: 3px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::selection {
-  background: var(--flux);
+  background: var(--volt);
   color: #fff;
 }
 
 @media (max-width: 720px) {
   :root {
     font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

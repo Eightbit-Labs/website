@@ -1,187 +1,127 @@
 # Eightbit Labs — Design System
 
-> **Convergence** — the studio where two streams meet at a point.
+> **The Byte** — the page is built as the studio's name: eight bits, one byte.
 
-**Theme:** light · **Mood:** engineered, calm, fast · **Risk taken:** the whole page is organized around the logo's pinch point, with a live "bit-stream" that flows down and converges in the hero.
+**Theme:** light · **Mood:** precise, playful-engineered, modern · **Risk taken:** a pixel font (Silkscreen) as the site's utility voice, anchored by a live interactive 8-bit register in the hero.
 
 ---
 
 ## 1. The subject, pinned
 
-Eightbit Labs is a small, sharp software studio that builds **neural systems** and **the web platforms that carry them**. The audience is technical decision-makers (founders, eng leads) sizing the team up, plus developer peers. The page has one job: convince them this team ships precise, intelligent software, then route them to GitHub.
+Eightbit Labs is a five-person studio building **neural systems** and **the web platforms that carry them**. Audience: technical founders, eng leads, developer peers. The page's one job: prove the team ships precise, intelligent software, then route to GitHub.
 
-The brand's own artifact does the design work for us. The logo is an **hourglass built from two triangles** — a downward, solid triangle meeting an upward, outlined triangle at a narrow pinch. It encodes the two things the studio actually is:
-
-- **Two disciplines converging** — neural systems (▽) and web engineering (△) meeting at one point: integrated delivery.
-- **Flow and time** — sand through a glass; "eightbit" = the byte, the smallest unit, streaming through.
-
-So the design isn't decorated *with* the logo — it is built *as* the logo. The spine of the page is a vertical convergence axis; sections are separated by **pinch dividers** (two hairline triangles kissing at a point); the hero literally streams bits down to the pinch.
-
-This is deliberately **not** the three AI defaults: not cream-paper-serif-terracotta (we use a cool neutral paper, a grotesque, and amber stays disciplined and monochrome-first), not near-black-with-acid-accent (light theme), not a hairline broadsheet (we have one bold orchestrated moment, generous space, and radii).
+Pass 1 built the page as the **logo** (hourglass convergence). This pass builds it as the **name**: *eightbit* — the byte, the smallest complete unit of meaning. The thesis: a studio that sweats every bit. Everything pixel-flavored on the page carries real data (ASCII codes, place values, identicons derived from real handles) — never decoration.
 
 ---
 
 ## 2. Color
 
-Achromatic at the core — true to a logo that is literally black and white — with **one** warm accent standing in for the flowing sand. Paper is cool-neutral white, never cream.
+Cool porcelain light theme with **one** accent: volt cobalt, the color of "logic high." It appears only on ON states, interactions, and live data. Never cream, never terracotta.
 
 | Name | Hex | Role |
 |------|-----|------|
-| **Paper** | `#F5F6F4` | Page background — cool off-white, the "glass" |
-| **Bright** | `#FCFDFB` | Raised card / panel surface |
-| **Ink** | `#0C0D0E` | Primary text, the solid triangle, near-black |
-| **Graphite** | `#5A5E60` | Secondary text, mono labels |
-| **Mist** | `#E2E5E1` | Hairlines, borders, dividers |
-| **Pinch** | `#101216` | The one dark band (integrated-delivery / pinch panel) |
-| **Flux** | `#F0531C` | Accent — molten sand. Links, active state, the stream, one emphasis |
-| **Flux-soft** | `rgba(240,83,28,0.12)` | Accent wash for hovers/fills |
+| **Paper** | `#F3F5FA` | Page background — cool porcelain with a blue cast |
+| **Card** | `#FFFFFF` | Raised surfaces, the work band |
+| **Ink** | `#0D1017` | Primary text, ON bit keys, logo tile |
+| **Slate** | `#5A6478` | Secondary text, pixel labels |
+| **Line** | `#DDE3F0` | Hairlines, borders, the dot raster |
+| **Volt** | `#2B4BFF` | Accent — logic high. ON keylines, hovers, live readout, links |
+| **Volt-soft** | `rgba(43,75,255,.09)` | Cursor wash, ghost-button hover |
 
-**Rule:** Flux appears only at points of *convergence or interaction* — the bit-stream, a link underline drawing to a point, the active nav tick, the CTA. If it shows up as decoration, remove it. The page should read black-on-white with amber sparks.
+**Rule:** Volt = a bit turning on. If it appears somewhere nothing is "on" or interactive, remove it.
 
 ---
 
 ## 3. Typography
 
-The logo wordmark is rounded and geometric, so the type goes the other way — crisp grotesque — and lets the mark hold the round. Three roles, all on Google Fonts.
+Three voices, all Google Fonts — deliberately none reused from pass 1:
 
-- **Display — Bricolage Grotesque (800/700).** Characterful modern grotesque with optical flare; not Inter/Space-Grotesk default. Tight tracking. Used big and rarely.
-- **Body / UI — Hanken Grotesk (400/500/600).** Warm, legible grotesque, less ubiquitous than Inter. All paragraphs, buttons, nav.
-- **Utility / data — JetBrains Mono (400/500).** The "eightbit" voice: eyebrows, stats, role tags, section indices, rendered like terminal output (`// neural`, `05 — engineers`). Encodes real metadata, never decoration.
+- **Display — Unbounded (600/700).** Wide rounded geometric; echoes the rounded logo wordmark. Hero + H2 only, moderate sizes (it's a wide face).
+- **Body — Schibsted Grotesk (400–700).** Modern, warm, legible. Paragraphs, buttons, nav, names.
+- **Utility — Silkscreen (400/700).** The literal 8-bit voice. Tiny uppercase labels, register readout, role tags, place values. Always carries real data.
 
-### Scale
-
-| Role | Font | Size (clamp) | Weight | Tracking |
-|------|------|------|--------|----------|
-| Hero | Bricolage | `clamp(2.9rem, 7vw, 5.5rem)` | 800 | -0.03em |
-| H2 | Bricolage | `clamp(2rem, 4vw, 3.25rem)` | 700 | -0.025em |
-| H3 | Hanken | `1.25rem` | 600 | -0.01em |
-| Body | Hanken | `1.0625rem` | 400 | -0.005em |
-| Lead | Hanken | `clamp(1.05rem, 1.6vw, 1.3rem)` | 400 | -0.01em |
-| Mono label | JetBrains Mono | `0.78rem` | 500 | 0.04em, uppercase |
+| Role | Font | Size | Notes |
+|------|------|------|-------|
+| Hero | Unbounded 700 | `clamp(2.35rem, 6vw, 4.3rem)` | -0.015em |
+| H2 | Unbounded 600 | `clamp(1.7rem, 3.4vw, 2.6rem)` | |
+| H3 | Schibsted 600 | `1.3rem` | |
+| Body/Lead | Schibsted 400 | `1rem` / `clamp(1.05…1.25rem)` | |
+| Pixel label | Silkscreen 400 | `0.68rem` | 0.12em tracking, uppercase |
 
 ---
 
 ## 4. Layout
 
-A single centered column (max `1180px`) with a **convergence axis** running down the middle. Sections alternate Paper / Bright and are joined by **pinch dividers** rather than plain rules. Generous vertical rhythm (`clamp(6rem, 12vh, 9rem)` between sections).
+Single column, max `1140px`. Sections: hero (paper) → work band (white, hairline top/bottom) → team (paper) → CTA (paper) → footer (white). No dividers — the alternating bands + generous `--section-y` do the separation. A faint fixed dot raster (26px grid) sits behind the whole page: the pixel grid the site lives on.
 
 ```
-┌──────────────────────────────────────────────┐
-│ ◢◣ eightbit labs            // github ↗       │  sticky, mono meta, blur
-├──────────────────────────────────────────────┤
-│            ▽   bits stream down ↓             │
-│           ╲   ·  · ·  ·   ╱                   │   HERO
-│        We build software that thinks.         │   Bricolage 800
-│        ╱   · converge at pinch ·  ╲           │
-│            △   ↑ disperse below               │
-│   [ explore github ]   [ see the work ]       │
-│   // neural systems · web engineering         │
-└──────────────────────────────────────────────┘
-                  · ▽△ ·   pinch divider
-┌──────────────────────────────────────────────┐
-│ // what we build                              │
-│  ┌────────────┐    ▷◁    ┌────────────┐       │  TWO STREAMS
-│  │ ▽ neural   │  pinch   │ △ web      │       │  converge inward
-│  │   systems  │          │ engineering│       │
-│  └────────────┘          └────────────┘       │
-│        ┌──────── pinch panel (dark) ───────┐  │
-│        │ integrated delivery — where they  │  │
-│        │ meet                              │  │
-│        └───────────────────────────────────┘  │
-└──────────────────────────────────────────────┘
-                  · ▽△ ·
-┌──────────────────────────────────────────────┐
-│ // the team        05 — engineers            │  TEAM
-│  five who ship                                │
-│  [card] [card] [card] [card] [card]           │  mono role tags
-└──────────────────────────────────────────────┘
-                  · ▽△ ·
-┌──────────────────────────────────────────────┐
-│  See what we're building.                     │  CTA band
-│  github.com/Eightbit-Labs            →        │
-└──────────────────────────────────────────────┘
+┌────────────────────────────────────────────┐
+│ ◢◣ eightbit labs        work team [github] │ sticky blur bar
+├────────────────────────────────────────────┤
+│ 8 BITS · 1 BYTE · 5 ENGINEERS               │
+│ Every bit                                   │ Unbounded 700
+│ engineered.                                 │ volt period
+│ lead… [Explore our GitHub] [See the work]   │
+│                                             │
+│ REG A — WRITING "EIGHTBIT LABS"             │ ← signature
+│ [0][1][1][0][0][1][0][1]  ← flip-dot keys   │
+│ 128 64 32 16 8 4 2 1                        │
+│ BIN 01100101 · HEX 0x65 · CHR e ▌           │
+├────────────── white band ──────────────────┤
+│ WHAT WE BUILD — Two crafts, one stack.      │
+│ [chip sprite / neural]  [window sprite/web] │
+│ [rocket sprite — integrated delivery, wide] │
+├────────────────────────────────────────────┤
+│ THE TEAM — Five people. Full stack.         │
+│ [identicon×5 — generated from handles]      │
+├────────────────────────────────────────────┤
+│        ◢◣  Read the source.  [github]       │
+└────────────────────────────────────────────┘
 ```
-
-**Capabilities as content-true structure:** the two disciplines are presented as two streams that slide *toward center* on scroll and resolve into the dark "integrated delivery" pinch panel below — the hourglass narrative, not arbitrary 01/02/03 numbering. Numbered markers are dropped; mono tags carry real info instead.
 
 ---
 
-## 5. Signature — the pinch & the bit-stream
+## 5. Signature — the byte register
 
-**One memorable thing, executed well; everything else stays quiet.**
+Eight physical flip-dot keys (3D rotateX flip, staggered 42ms cascade) auto-type `eightbit labs` in ASCII, one char every 1.4s, with a live BIN/HEX/CHR readout and place-value labels. **Clicking any key flips that bit and takes the register manual for 7s** (status line switches to `REG A — MANUAL INPUT`), so visitors can compose their own byte and see what character they made. Reduced motion: no auto-typing, keys still clickable.
 
-1. **Bit-stream (hero).** A canvas of small squares ("bits") drifts slowly down through the hero, pulled toward the central axis as it nears the pinch line, then dispersing below — an hourglass of light, the literal "eightbit through the glass." Amber-tinted, sparse (~78 bits), low opacity. Fall speed is kept very slow (a bit takes ~12–30s top-to-bottom) so it reads as a calm, settling drift rather than motion.
-2. **Pinch dividers.** Between every section, two thin triangles meet at a center point — a recurring echo of the mark that ties the page together cheaply and unmistakably.
-3. **The original logo**, set in a rounded black tile so the white hourglass reads on light paper — used in nav, the CTA centerpiece, and footer.
+Supporting pixel cast (all data-true):
+- **8×8 capability sprites** — hand-drawn chip / browser / rocket, hop 2 steps on hover.
+- **Team identicons** — deterministic 8×8 mirrored sprites hashed from each GitHub handle (FNV-1a + xorshift).
 
 ---
 
 ## 6. Motion
 
-Deliberate, reduced-motion-safe (everything below freezes to a tasteful static state under `prefers-reduced-motion`).
-
-- **Load sequence:** hero headline clip-reveals line by line → lead + CTAs fade up → the bit-stream drifts underneath.
-- **Ambient:** the bit-stream (hero only), a very slow downward drift converging at the pinch. Nothing else moves on its own.
-- **Scroll reveals:** sections rise + clip from the convergence axis (IntersectionObserver, staggered).
-- **Capabilities:** the two discipline cards translate inward toward the pinch as they enter.
-- **Hover micro:** buttons fill from a center point with Flux-soft + draw a 1px Flux underline to a point; cards lift 2px and gain a Flux hairline + a triangular corner notch.
-
----
-
-## 7. Components
-
-- **Nav:** sticky, translucent blur pill-bar; SVG mark + wordmark left, mono `// github ↗` link right; active scroll position shows a small Flux tick.
-- **Button / primary:** Ink fill, Paper text, fills toward Flux on hover. **Secondary:** Mist hairline, Ink text, Flux-soft wash on hover.
-- **Capability card:** Bright surface, Mist hairline, generous padding, a discipline triangle (▽/△) drawn in the corner, mono tag.
-- **Pinch panel:** Pinch dark surface, Paper text, one Flux keyline — the only dark block on the page.
-- **Team card:** Bright surface, name (Hanken 600), mono role tag, GitHub link; hover reveals a triangular notch + Flux handle.
-- **Pinch divider:** centered two-triangle SVG, Mist stroke.
+- **Load:** hero cascade (eyebrow → headline → lead → CTAs), then keys pop in left-to-right.
+- **Ambient:** only the register typing + blinking cursor block. Nothing else self-animates.
+- **Pointer:** volt radial wash follows the cursor through the hero (CSS vars, no rAF).
+- **Scroll:** rise-and-fade reveals via IntersectionObserver, staggered per grid.
+- **Scroll signature — the program counter (`PC`):** a fixed pill (bottom-right, ≥720px) renders scroll position as a live 8-bit counter, `0x00` at top to `0xFF` at bottom. Low bits flicker, high bits march — a real binary counter driven by real data. At the bottom all eight bits light volt and the readout switches to `EOF`. Click jumps back to `0x00` (respects reduced motion).
+- **Hover micro:** cards lift + volt pixel corner-brackets snap in; sprites hop in 2 steps and go volt; buttons fill volt; nav links draw a volt underline.
+- All frozen under `prefers-reduced-motion` (global kill + per-component fallbacks).
 
 ---
 
-## 8. Voice & copy
+## 7. Voice & copy
 
-Plain, confident, engineered. Active verbs, sentence case, no filler.
+Plain, confident, a little bit-punny but never cute twice in a row.
 
-- **Eyebrow:** `// neural systems + web engineering`
-- **Hero H1:** *We build software that thinks.*
-- **Hero lead:** *Eightbit Labs ships neural systems and the web platforms that carry them — engineered for speed, clarity, and production from day one.*
-- **Capabilities H2:** *Two disciplines, one point of convergence.*
-  - Neural systems — *Model-backed features, inference workflows, and experimentation pipelines built to run inside real products.*
-  - Web engineering — *High-performance interfaces, API-connected apps, and developer tooling that stays maintainable.*
-  - Integrated delivery (pinch) — *Where the two streams meet: machine intelligence wired to strong UX, deliberate from architecture to interface.*
-- **Team H2:** *The people who ship it.*  ·  mono: `05 — engineers`
-- **CTA:** *See what we're building.* → `github.com/Eightbit-Labs`
+- Eyebrow: `8 BITS · 1 BYTE · 5 ENGINEERS`
+- H1: *Every bit engineered.*
+- Work H2: *Two crafts, one stack.*
+- Team H2: *Five people. Full stack.*
+- CTA H2: *Read the source.*
 
 ---
 
-## 9. Quality floor
+## 8. Quality floor
 
-Responsive to 320px (stream thins, grids collapse to one column, nav wraps). Visible keyboard focus (2px Flux ring). `prefers-reduced-motion` respected everywhere. Color contrast: Ink on Paper ≥ 15:1; Graphite on Paper ≥ 5:1; Flux used for accent/large text, never small body.
+320px-safe (register uses `repeat(8,1fr)`, place labels drop at 440px), 2px volt focus ring, reduced motion respected, Ink-on-Paper ≈ 15:1, Slate-on-Paper ≈ 5.6:1, Volt used at label sizes on white ≈ 6:1.
 
 ---
 
-## 10. Tokens (CSS custom properties)
+## Pass log
 
-```css
-:root {
-  /* color */
-  --paper:#F5F6F4; --bright:#FCFDFB; --ink:#0C0D0E; --graphite:#5A5E60;
-  --mist:#E2E5E1; --pinch:#101216; --flux:#F0531C; --flux-soft:rgba(240,83,28,.12);
-
-  /* type */
-  --font-display:'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body:'Hanken Grotesk', system-ui, sans-serif;
-  --font-mono:'JetBrains Mono', ui-monospace, monospace;
-
-  /* space */
-  --col-max:1180px; --gutter:clamp(1.25rem,4vw,2.5rem);
-  --section-y:clamp(6rem,12vh,9rem);
-
-  /* radius + shadow */
-  --r-sm:6px; --r-md:12px; --r-lg:20px; --r-pill:999px;
-  --shadow-card:0 1px 2px rgba(12,13,14,.04), 0 12px 32px -12px rgba(12,13,14,.12);
-  --shadow-pop:0 2px 6px rgba(12,13,14,.06), 0 24px 60px -20px rgba(12,13,14,.22);
-  --ease:cubic-bezier(.22,1,.36,1);
-}
-```
+- **Pass 1 — "Convergence" (superseded):** page built as the hourglass logo. Cool white `#F5F6F4`, orange Flux `#F0531C`, Bricolage Grotesque + Hanken Grotesk + JetBrains Mono, canvas bit-stream funneling to a pinch, pinch dividers, dark "integrated delivery" panel. Don't reuse these faces/accent in future remakes.
+- **Pass 2 — "The Byte" (current, 2026-07-10):** described above. If a pass 3 is ever asked for, the unexplored angles noted were: flip-dot display wall rendering glyphs, Bayer-dither halftone imagery, and a dark "terminal phosphor" theme (was out of scope — brief required light).
