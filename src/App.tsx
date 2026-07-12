@@ -156,18 +156,23 @@ function ByteRegister({ onCode }: { onCode?: (code: number) => void }) {
     onCode?.(code)
   }, [code, onCode])
 
-  const bin = bits.map((b) => (b ? '1' : '0')).join('')
   const hex = `0x${code.toString(16).padStart(2, '0').toUpperCase()}`
-  const chr = code === 32 ? '␣' : code > 32 && code < 127 ? String.fromCharCode(code) : '·'
 
+  /* The keys are the binary and the display wall is the character, so
+     the register states only what neither can show: what it's doing,
+     and the byte's value. */
   return (
     <div className="register">
       <p className="pix register-status">
-        {manual ? (
-          <>reg a — manual input<span className="volt-txt"> · resuming…</span></>
-        ) : (
-          <>reg a — writing “{MESSAGE}”</>
-        )}
+        {/* one flex child per side — keeps "· resuming…" glued to the status */}
+        <span>
+          {manual ? (
+            <>reg a — manual input<span className="volt-txt"> · resuming…</span></>
+          ) : (
+            <>reg a — writing “{MESSAGE}”</>
+          )}
+        </span>
+        <span className="register-hex">{hex}</span>
       </p>
 
       <div className="register-keys" role="group" aria-label="Interactive byte register — click a key to flip a bit">
@@ -194,15 +199,6 @@ function ByteRegister({ onCode }: { onCode?: (code: number) => void }) {
           <span key={v}>{v}</span>
         ))}
       </div>
-
-      <p className="register-readout pix">
-        <span>bin {bin}</span>
-        <span>hex {hex}</span>
-        <span className="readout-chr">
-          chr <b className="volt-txt">{chr}</b>
-          <span className="cursor-block" aria-hidden="true" />
-        </span>
-      </p>
     </div>
   )
 }
@@ -327,7 +323,10 @@ function GlyphDisplay({ code }: { code: number }) {
           />
         ))}
       </div>
-      <figcaption className="pix glyph-label">chr out — dot matrix</figcaption>
+      <figcaption className="pix glyph-label">
+        chr out
+        <span className="cursor-block" />
+      </figcaption>
     </figure>
   )
 }
