@@ -1,35 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700&family=Silkscreen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* color — porcelain light, one volt accent for "logic high" */
-  --paper: #f3f5fa;
-  --card: #ffffff;
-  --ink: #0d1017;
-  --slate: #5a6478;
-  --line: #dde3f0;
-  --volt: #2b4bff;
-  --volt-soft: rgba(43, 75, 255, 0.09);
-  --volt-glow: rgba(43, 75, 255, 0.32);
+  /* color — parchment editorial canvas, near-monochrome + one blue */
+  --parchment: #fefffc;
+  --paper: #ffffff;
+  --linen: #f9faf7;
+  --ink: #171717;
+  --graphite: #2c2c2c;
+  --charcoal: #444141;
+  --ash: #646464;
+  --fog: #b4b8b4;
+  --mist: #dee2de;
+  --twilight: #282834;
+  --dusk: #1f1f29;
+  --signal: #41a1cf;
+  --cerulean: #0081c0;
 
   /* type */
-  --font-display: 'Unbounded', system-ui, -apple-system, sans-serif;
-  --font-body: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
-  --font-pixel: 'Silkscreen', ui-monospace, monospace;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* space */
-  --col-max: 1140px;
+  --col-max: 1200px;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --section-y: clamp(5.5rem, 11vh, 8.5rem);
+  --section-y: clamp(4rem, 9vh, 6.5rem);
 
   /* radius */
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 22px;
-  --r-pill: 999px;
+  --r-btn: 8px;
+  --r-card: 12px;
+  --r-card-lg: 16px;
+  --r-surface: 24px;
+  --r-pill: 50px;
 
   /* shadow */
-  --shadow-card: 0 1px 2px rgba(13, 16, 23, 0.04), 0 14px 34px -14px rgba(13, 16, 23, 0.12);
-  --shadow-pop: 0 2px 6px rgba(13, 16, 23, 0.05), 0 26px 60px -22px rgba(13, 16, 23, 0.2);
+  --shadow-nav: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
+  --shadow-card: rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px;
+  --shadow-diagram: rgba(0, 0, 0, 0.05) 0px 1px 8px 0px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -37,8 +43,8 @@
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
-  color: var(--ink);
-  background: var(--paper);
+  color: var(--charcoal);
+  background: var(--parchment);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -49,17 +55,6 @@
   box-sizing: border-box;
 }
 
-/* squircle corners — every border-radius on the site renders as a
-   superellipse where supported (Chromium 139+); elsewhere it falls
-   back to the plain rounded rectangle. */
-@supports (corner-shape: squircle) {
-  *,
-  *::before,
-  *::after {
-    corner-shape: squircle;
-  }
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -68,25 +63,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--paper);
+  background: var(--parchment);
   overflow-x: hidden;
-}
-
-/* faint dot raster over the whole page — the pixel grid the site lives
-   on. --raster-y is set from scroll position in half-cell (13px)
-   quanta, so the grid ticks forward as the page scrolls. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(var(--line) 1px, transparent 1.4px);
-  background-size: 26px 26px;
-  background-position: 0 calc(var(--raster-y, 0px) * -1);
-  opacity: 0.55;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
-  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.35) 40%, #000 100%);
 }
 
 a {
@@ -116,29 +94,28 @@ figure {
 h1,
 h2 {
   font-family: var(--font-display);
-  color: var(--ink);
+  font-weight: 400;
+  color: var(--graphite);
 }
 
 h1 {
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.05;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 h2 {
-  font-weight: 600;
-  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
-  letter-spacing: -0.01em;
-  line-height: 1.12;
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 h3 {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 1.3rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.35rem;
   letter-spacing: -0.01em;
-  line-height: 1.2;
-  color: var(--ink);
+  line-height: 1.25;
+  color: var(--graphite);
 }
 
 p {
@@ -146,13 +123,13 @@ p {
 }
 
 :focus-visible {
-  outline: 2px solid var(--volt);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
 ::selection {
-  background: var(--volt);
+  background: var(--signal);
   color: #fff;
 }
 

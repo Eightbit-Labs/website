@@ -1,7 +1,8 @@
 /* ==================================================================
-   Eightbit Labs — "The Byte"
-   Light porcelain surface, one volt-cobalt accent for logic-high
-   states, pixel voice in Silkscreen. Signature: the byte register.
+   Eightbit Labs — editorial pass
+   Warm parchment canvas, Fraunces serif for headlines, Inter for
+   everything else. Near-monochrome palette with a single signal-blue
+   outline accent and one vivid cerulean surface used once.
    ================================================================== */
 
 .page {
@@ -19,27 +20,19 @@
 
 /* ------------------------------ voice ----------------------------- */
 
-.pix {
-  font-family: var(--font-pixel);
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--slate);
-}
-
-.volt-txt {
-  color: var(--volt);
-}
-
 .eyebrow {
-  margin-bottom: 1.1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 0.9rem;
 }
 
 .lead {
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.4vw, 1.15rem);
   line-height: 1.6;
-  color: var(--slate);
+  color: var(--charcoal);
 }
 
 /* ---------------------------- logo tile --------------------------- */
@@ -47,8 +40,8 @@
 .logo-tile {
   display: inline-grid;
   place-items: center;
-  background: var(--ink);
-  border-radius: 10px;
+  background: var(--dusk);
+  border-radius: var(--r-btn);
   overflow: hidden;
   flex: none;
 }
@@ -60,54 +53,98 @@
   display: block;
 }
 
-/* ------------------------------- nav ------------------------------ */
+/* ------------------------- floating nav pill ------------------------ */
+
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -18px);
+  }
+}
+
+@keyframes progress-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.scroll-progress {
+  --scroll-progress: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  z-index: 60;
+  transform-origin: left;
+  transform: scaleX(var(--scroll-progress));
+  background: var(--signal);
+  opacity: 0.85;
+  animation: progress-in 0.5s var(--ease) 0.9s both;
+}
 
 .nav {
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  position: fixed;
+  top: clamp(14px, 3vh, 24px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem var(--gutter);
-  background: rgba(243, 245, 250, 0.8);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
+  gap: clamp(1.2rem, 4vw, 2.8rem);
+  padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(40, 40, 52, 0.1);
+  box-shadow: var(--shadow-nav);
+  max-width: calc(100vw - 2rem);
+  animation: nav-drop 0.7s var(--ease) both;
+  transition: background 0.35s var(--ease), box-shadow 0.35s var(--ease), padding 0.35s var(--ease);
+}
+
+.nav.is-scrolled {
+  background: rgba(255, 255, 255, 0.86);
+  padding-block: 0.45rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 28px -10px, rgba(0, 0, 0, 0.06) 0px 2px 6px 0px;
 }
 
 .nav-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.6rem;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: -0.01em;
+  font-size: 1rem;
+  color: var(--graphite);
+  white-space: nowrap;
+}
+
+.nav-brand:hover .logo-tile {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.logo-tile {
+  transition: transform 0.35s var(--ease);
 }
 
 .nav-mark {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 3vw, 1.8rem);
+  gap: clamp(0.9rem, 2.5vw, 1.6rem);
 }
 
-.nav-links a {
+.nav-links a:not(.nav-gh) {
   position: relative;
+  font-size: 0.9rem;
   font-weight: 500;
-  font-size: 0.95rem;
-  color: var(--slate);
+  color: var(--charcoal);
   transition: color 0.2s var(--ease);
-}
-
-.nav-links a:hover {
-  color: var(--ink);
 }
 
 .nav-links a:not(.nav-gh)::after {
@@ -116,11 +153,15 @@
   left: 0;
   bottom: -5px;
   width: 100%;
-  height: 2px;
-  background: var(--volt);
+  height: 1.5px;
+  background: var(--signal);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s var(--ease);
+}
+
+.nav-links a:not(.nav-gh):hover {
+  color: var(--graphite);
 }
 
 .nav-links a:not(.nav-gh):hover::after {
@@ -130,281 +171,133 @@
 .nav-gh {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.5rem 1rem;
-  border-radius: var(--r-pill);
-  background: var(--ink);
-  color: #fff;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--r-btn);
+  border: 1px solid var(--signal);
+  color: var(--signal);
+  font-size: 0.85rem;
   font-weight: 500;
-  transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
-.nav-links a.nav-gh:hover {
-  color: #fff;
-  background: var(--volt);
+.nav-gh:hover {
+  background: rgba(65, 161, 207, 0.08);
   transform: translateY(-1px);
 }
 
 .nav-gh svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 /* ------------------------------- hero ----------------------------- */
 
 .hero {
   position: relative;
-  padding-block: clamp(5rem, 12vh, 8.5rem) var(--section-y);
+  height: 100vh;
+  min-height: 600px;
   overflow: hidden;
+  display: flex;
+  align-items: flex-end;
 }
 
-/* Bayer-dithered skyline — reduced to an 8x8 ordered-dither dot field
-   in the site's own pixel voice, so a real place becomes the same unit
-   the register speaks in: a grid of on/off dots. Kept to the hero's
-   right half, behind the glyph wall, so it reads as what the register
-   is describing rather than fighting the headline for contrast. Never
-   a photo — it dissolves into the paper on every edge via mask. */
-.hero-skyline {
+.hero-photo-parallax {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: clamp(320px, 50vh, 480px);
-  z-index: 0;
-  background-repeat: no-repeat;
-  background-position: bottom right;
-  background-size: auto 100%;
-  opacity: 0.58;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 54%);
-  mask-image: linear-gradient(to right, transparent 0%, #000 54%);
+  inset: 0;
+  overflow: hidden;
+  transform: translateY(var(--drift, 0px));
+  will-change: transform;
 }
 
-@media (max-width: 960px) {
-  .hero-skyline {
-    display: none;
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.11);
   }
 }
 
-/* cursor-following volt wash */
-.hero::after {
-  content: '';
+.hero-photo {
+  position: absolute;
+  inset: -6%;
+  background-repeat: no-repeat;
+  background-position: center 35%;
+  background-size: cover;
+  filter: saturate(0.82) brightness(0.8) contrast(1.05);
+  animation: hero-zoom 26s ease-in-out infinite alternate;
+}
+
+.hero-grade {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 30%), var(--volt-soft), transparent 70%);
+  background: linear-gradient(180deg, rgba(23, 23, 29, 0.1) 0%, rgba(23, 23, 34, 0.5) 55%, rgba(15, 15, 20, 0.8) 100%);
+  mix-blend-mode: multiply;
 }
 
-.hero-inner {
+.hero-overlay-wrap {
   position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: clamp(2.5rem, 6vw, 5rem);
+  z-index: 2;
+  width: 100%;
+  max-width: var(--col-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-bottom: clamp(3rem, 9vh, 5.5rem);
 }
 
-.hero-copy {
-  flex: 1;
-  min-width: 0;
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.hero-card {
+  max-width: 640px;
+  background: rgba(254, 255, 252, 0.74);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--r-surface);
+  padding: clamp(1.8rem, 4vw, 3rem);
+  box-shadow: var(--shadow-card);
+  animation: card-in 0.8s var(--ease) both;
+}
+
+.hero-card > * {
+  animation: rise-in 0.7s var(--ease) both;
+}
+
+.hero-card .eyebrow {
+  animation-delay: 0.15s;
 }
 
 .hero-title {
-  font-size: clamp(2.35rem, 6vw, 4.3rem);
-  max-width: 16ch;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  margin-top: 0.9rem;
+  animation-delay: 0.25s;
 }
 
 .hero-lead {
-  max-width: 52ch;
-  margin-top: 1.6rem;
+  max-width: 46ch;
+  margin-top: 1.1rem;
+  animation-delay: 0.37s;
 }
 
 .cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
-  margin-top: 2.2rem;
-}
-
-/* load-in cascade */
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-}
-
-.h-in {
-  animation: rise-in 0.7s var(--ease) both;
-}
-
-.h-in-1 { animation-delay: 0.05s; }
-.h-in-2 { animation-delay: 0.14s; }
-.h-in-3 { animation-delay: 0.26s; }
-.h-in-4 { animation-delay: 0.38s; }
-.h-in-5 { animation-delay: 0.52s; }
-
-/* ----------------------- glyph display (chr out) ------------------- */
-/* The register's output device: a flip-dot wall on the hero's right
-   that renders reg a's current character. Lit dots are volt — logic
-   high — and each repaint sweeps diagonally via per-dot delays. */
-
-.glyph-display {
-  margin: 0;
-  flex: none;
-}
-
-.glyph-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 5px;
-  width: clamp(240px, 27vw, 330px);
-}
-
-.glyph-dot {
-  aspect-ratio: 1;
-  border-radius: 4px;
-  background: var(--line);
-  opacity: 0.45;
-  transition: background 0.3s var(--ease), opacity 0.3s var(--ease), box-shadow 0.3s var(--ease);
-  transition-delay: var(--d, 0ms);
-}
-
-.glyph-dot.on {
-  background: var(--volt);
-  opacity: 1;
-  box-shadow: 0 0 12px -3px var(--volt-glow);
-}
-
-.glyph-label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.45em;
-  margin-top: 1rem;
-  font-size: 0.58rem;
-}
-
-@media (max-width: 960px) {
-  .glyph-display {
-    display: none;
-  }
-}
-
-/* ---------------------------- byte register ----------------------- */
-
-.register {
-  margin-top: clamp(3rem, 7vh, 4.5rem);
-  max-width: 720px;
-}
-
-.register-status {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.9rem;
-}
-
-.register-hex {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.register-keys {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: clamp(6px, 1.2vw, 12px);
-}
-
-@keyframes key-pop {
-  from {
-    opacity: 0;
-    transform: translateY(14px) scale(0.92);
-  }
-}
-
-.bit-key {
-  position: relative;
-  aspect-ratio: 1;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  perspective: 600px;
-  animation: key-pop 0.55s var(--ease) both;
-  animation-delay: calc(0.5s + var(--i) * 0.055s);
-}
-
-.bit-flipper {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  transition: transform 0.55s var(--ease);
-  transition-delay: calc(var(--i) * 42ms);
-}
-
-.bit-key.on .bit-flipper {
-  transform: rotateX(180deg);
-}
-
-.face {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  border-radius: var(--r-md);
-  font-family: var(--font-pixel);
-  font-size: clamp(0.85rem, 2.2vw, 1.35rem);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.face-0 {
-  background: var(--card);
-  color: var(--slate);
-  border: 1px solid var(--line);
-  box-shadow: inset 0 -3px 0 rgba(13, 16, 23, 0.05), 0 1px 2px rgba(13, 16, 23, 0.04);
-}
-
-.face-1 {
-  transform: rotateX(180deg);
-  background: var(--ink);
-  color: #fff;
-  border: 1px solid var(--ink);
-  box-shadow: inset 0 2px 0 var(--volt), 0 6px 18px -6px var(--volt-glow);
-}
-
-.bit-key:hover .face-0 {
-  border-color: var(--volt);
-  color: var(--volt);
-}
-
-.bit-key:active .bit-flipper {
-  transition-delay: 0s;
-}
-
-.register-places {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: clamp(6px, 1.2vw, 12px);
-  margin-top: 0.5rem;
-  font-size: 0.55rem;
-  letter-spacing: 0.05em;
-  text-align: center;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-.cursor-block {
-  width: 0.55em;
-  height: 1em;
-  background: var(--volt);
-  animation: blink 1.1s steps(1) infinite;
+  gap: 0.85rem;
+  margin-top: 1.8rem;
+  animation-delay: 0.49s;
 }
 
 /* ----------------------------- buttons ---------------------------- */
@@ -412,62 +305,86 @@
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.5rem;
-  border-radius: var(--r-pill);
+  gap: 0.55rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--r-btn);
+  border: 1px solid transparent;
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.98rem;
+  font-weight: 500;
+  font-size: 0.95rem;
   line-height: 1;
-  transition: background 0.25s var(--ease), color 0.25s var(--ease),
-    border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease),
+    border-color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 .btn svg {
-  width: 17px;
-  height: 17px;
-  transition: transform 0.25s var(--ease);
-}
-
-.btn:hover svg:last-child {
-  transform: translateX(3px);
+  width: 15px;
+  height: 15px;
 }
 
 .btn-primary {
-  background: var(--ink);
-  color: #fff;
+  background: transparent;
+  border-color: var(--signal);
+  color: var(--signal);
 }
 
 .btn-primary:hover {
-  background: var(--volt);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px -10px var(--volt-glow);
+  background: rgba(65, 161, 207, 0.08);
+  transform: translateY(-1px);
 }
 
-.btn-ghost {
-  border: 1px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
+.btn-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  transition: transform 0.25s var(--ease);
 }
 
-.btn-ghost:hover {
-  border-color: var(--volt);
-  color: var(--volt);
-  background: var(--volt-soft);
-  transform: translateY(-2px);
+.btn-primary:hover .btn-arrow {
+  transform: translateX(3px);
 }
 
-.btn-lg {
-  padding: 1.05rem 1.9rem;
-  font-size: 1.05rem;
+.btn-arrow svg {
+  width: 11px;
+  height: 11px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--twilight);
+  color: var(--twilight);
+}
+
+.btn-secondary:hover {
+  background: rgba(40, 40, 52, 0.06);
+  transform: translateY(-1px);
+}
+
+.btn-filled {
+  background: var(--dusk);
+  border-color: var(--twilight);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+}
+
+.btn-filled:hover {
+  background: #141420;
+  transform: translateY(-1px);
 }
 
 /* ----------------------------- sections --------------------------- */
 
 .band {
-  background: var(--card);
-  border-block: 1px solid var(--line);
+  background: var(--paper);
   padding-block: var(--section-y);
+}
+
+/* clear the floating nav pill, which stays fixed over every section */
+.hero + .band {
+  padding-top: clamp(6rem, 13vh, 8.5rem);
 }
 
 .team {
@@ -476,112 +393,72 @@
 
 .cta {
   padding-block: var(--section-y);
+  background: var(--linen);
 }
 
 .section-head {
-  margin-bottom: clamp(2.4rem, 5vh, 3.6rem);
+  margin-bottom: clamp(2.2rem, 5vh, 3.2rem);
 }
 
 .section-head h2 {
-  max-width: 22ch;
+  max-width: 20ch;
 }
 
 /* ------------------------------- cards ---------------------------- */
 
 .card {
   position: relative;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
+  background: var(--paper);
+  border: 1px solid var(--mist);
+  border-radius: var(--r-card);
   box-shadow: var(--shadow-card);
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-pop);
+  border-color: rgba(65, 161, 207, 0.4);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 4px 0px, rgba(0, 0, 0, 0.08) 0px 10px 18px -6px;
 }
 
-/* pixel corner brackets — appear on hover */
-.card::before,
-.card::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--volt);
-  opacity: 0;
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-  pointer-events: none;
-}
+/* staggered reveal across each grid, so cards arrive as a quiet wave     */
+/* rather than all at once — counts match the fixed content lengths. */
+.caps-grid > .reveal:nth-child(1) { transition-delay: 0s; }
+.caps-grid > .reveal:nth-child(2) { transition-delay: 0.08s; }
+.caps-grid > .reveal:nth-child(3) { transition-delay: 0.16s; }
 
-.card::before {
-  top: -2px;
-  left: -2px;
-  border-right: 0;
-  border-bottom: 0;
-  border-radius: 10px 0 0 0;
-  transform: translate(4px, 4px);
-}
-
-.card::after {
-  bottom: -2px;
-  right: -2px;
-  border-left: 0;
-  border-top: 0;
-  border-radius: 0 0 10px 0;
-  transform: translate(-4px, -4px);
-}
-
-.card:hover::before,
-.card:hover::after {
-  opacity: 1;
-  transform: translate(0, 0);
-}
+.team-grid > .reveal:nth-child(1) { transition-delay: 0s; }
+.team-grid > .reveal:nth-child(2) { transition-delay: 0.06s; }
+.team-grid > .reveal:nth-child(3) { transition-delay: 0.12s; }
+.team-grid > .reveal:nth-child(4) { transition-delay: 0.18s; }
+.team-grid > .reveal:nth-child(5) { transition-delay: 0.24s; }
 
 /* --------------------------- capabilities ------------------------- */
 
 .caps-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(1rem, 2.4vw, 1.6rem);
+  gap: clamp(1rem, 2.2vw, 1.5rem);
 }
 
 .cap-card {
-  padding: clamp(1.6rem, 3vw, 2.3rem);
+  padding: clamp(1.6rem, 3vw, 2.2rem);
 }
 
-.cap-sprite {
-  width: 44px;
-  height: 44px;
-  fill: var(--ink);
-  transition: fill 0.25s var(--ease);
-}
-
-@keyframes sprite-hop {
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-.card:hover .cap-sprite {
-  fill: var(--volt);
-  animation: sprite-hop 0.35s steps(2, end);
-}
-
-.cap-tag {
-  margin-top: 1.2rem;
-  color: var(--volt);
+.cap-card > svg {
+  width: 32px;
+  height: 32px;
+  color: var(--twilight);
 }
 
 .cap-card h3 {
-  margin-top: 0.45rem;
+  margin-top: 1.1rem;
 }
 
 .cap-body {
-  margin-top: 0.7rem;
-  color: var(--slate);
-  line-height: 1.62;
+  margin-top: 0.6rem;
+  color: var(--charcoal);
+  line-height: 1.6;
   max-width: 52ch;
 }
 
@@ -589,32 +466,43 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
   padding: 0;
   list-style: none;
 }
 
 .cap-meta li {
-  padding: 0.32rem 0.7rem;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  background: var(--paper);
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--mist);
+  border-radius: 999px;
+  background: var(--linen);
+  font-size: 0.8rem;
+  color: var(--ash);
 }
 
+/* the one vivid surface — atmospheric punctuation, used once */
 .cap-wide {
   grid-column: 1 / -1;
   display: flex;
   align-items: flex-start;
   gap: clamp(1.4rem, 3vw, 2.2rem);
+  background: var(--cerulean);
+  border-color: transparent;
+  color: #fff;
 }
 
-.cap-wide .cap-sprite {
+.cap-wide > svg {
+  color: #fff;
   margin-top: 0.3rem;
   flex: none;
 }
 
-.cap-wide-copy .cap-tag {
-  margin-top: 0;
+.cap-wide h3 {
+  color: #fff;
+}
+
+.cap-wide .cap-body {
+  color: rgba(255, 255, 255, 0.86);
 }
 
 /* ------------------------------- team ----------------------------- */
@@ -629,11 +517,13 @@
 
 .team-count {
   padding-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--ash);
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: clamp(0.9rem, 1.8vw, 1.3rem);
 }
 
@@ -645,37 +535,39 @@
   padding: 1.4rem 1.3rem;
 }
 
-.team-sprite {
+.avatar-ring {
   width: 52px;
   height: 52px;
-  fill: var(--ink);
+  color: var(--twilight);
   margin-bottom: 0.9rem;
-  transition: fill 0.25s var(--ease), transform 0.25s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
-.team-card:hover .team-sprite {
-  fill: var(--volt);
-  transform: scale(1.06);
+.team-card:hover .avatar-ring {
+  color: var(--signal);
 }
 
 .team-name {
-  font-weight: 600;
-  font-size: 1.02rem;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  color: var(--graphite);
   overflow-wrap: anywhere;
 }
 
 .team-role {
-  font-size: 0.58rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ash);
 }
 
 .team-handle {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-top: 0.9rem;
+  margin-top: 0.85rem;
   font-size: 0.85rem;
-  color: var(--slate);
+  color: var(--ash);
   overflow-wrap: anywhere;
   transition: color 0.2s var(--ease);
 }
@@ -687,7 +579,7 @@
 }
 
 .team-card:hover .team-handle {
-  color: var(--volt);
+  color: var(--signal);
 }
 
 /* -------------------------------- cta ----------------------------- */
@@ -697,13 +589,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.4rem;
-}
-
-.cta-mark {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  gap: 1.3rem;
 }
 
 .cta-lead {
@@ -713,9 +599,9 @@
 /* ------------------------------ footer ---------------------------- */
 
 .footer {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--mist);
   padding-block: 2rem;
-  background: var(--card);
+  background: var(--paper);
 }
 
 .footer-inner {
@@ -726,42 +612,29 @@
   flex-wrap: wrap;
 }
 
-/* --------------------- rasterize (scroll scrub) -------------------- */
-/* --p (0..1, quantized to 8ths) is set per element from scroll
-   position. The halftone mask's dots grow from nothing until they
-   merge into a solid surface — the element materializes pixel-first,
-   and de-rezzes the same way when scrolled back. No transitions:
-   the discrete snap between steps IS the effect. */
-
-.rz {
-  --p: 0;
-  transform: translateY(calc((1 - var(--p)) * 36px));
-  -webkit-mask-image: radial-gradient(
-    circle,
-    #000 calc(var(--p) * 100%),
-    transparent calc(var(--p) * 100% + 1%)
-  );
-  -webkit-mask-size: 9px 9px;
-  mask-image: radial-gradient(
-    circle,
-    #000 calc(var(--p) * 100%),
-    transparent calc(var(--p) * 100% + 1%)
-  );
-  mask-size: 9px 9px;
+.footer-meta {
+  font-size: 0.85rem;
+  color: var(--ash);
 }
 
-/* fully materialized: drop the mask so shadows/brackets render crisp */
-.rz.rz-done {
+/* ------------------------------ reveal ----------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
   transform: none;
-  -webkit-mask-image: none;
-  mask-image: none;
 }
 
 /* ---------------------------- responsive -------------------------- */
 
 @media (max-width: 900px) {
   .team-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -775,11 +648,15 @@
   }
 
   .team-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .nav-links a:not(.nav-gh) {
     display: none;
+  }
+
+  .hero-card {
+    max-width: 100%;
   }
 }
 
@@ -787,35 +664,12 @@
   .team-grid {
     grid-template-columns: 1fr;
   }
-
-  .register-places {
-    display: none;
-  }
-
-  /* status + hex stop competing for one line on narrow phones */
-  .register-status {
-    flex-wrap: wrap;
-    gap: 0.3rem;
-  }
 }
 
 /* -------------------------- reduced motion ------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  .h-in,
-  .bit-key,
-  .cursor-block {
-    animation: none;
-  }
-
-  .rz {
-    --p: 1;
+  .hero-photo {
     transform: none;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .hero::after {
-    background: radial-gradient(420px circle at 70% 20%, var(--volt-soft), transparent 70%);
   }
 }

@@ -1,134 +1,477 @@
-# Eightbit Labs — Design System
+# General Intelligence Company — Style Reference
+> Literary journal beside a bonfire
 
-> **The Byte** — the page is built as the studio's name: eight bits, one byte.
+**Theme:** light
 
-**Theme:** light · **Mood:** precise, playful-engineered, modern · **Risk taken:** a pixel font (Silkscreen) as the site's utility voice, anchored by a live interactive 8-bit register in the hero.
+General Intelligence Company uses an editorial, almost literary visual language: a warm off-white canvas interrupted by hand-painted atmospheric illustrations (moonlit skylines, wildflower meadows) that do the emotional work, while the actual UI lives on clean white between these scenes. Typography carries the brand — a custom display serif (ppmondwest) speaks in a low, measured voice at 48–54px with tight -0.04em tracking, while a custom sans (af) handles everything utilitarian at 13–18px. Color is nearly absent: a warm parchment white, a soft green-gray border, and one vivid blue (#41a1cf) used only as an outlined action border. Components whisper — 4px and 8px radii, hairline 1px borders, subtle backdrop-blur on the navigation, no decorative shadows.
 
----
+## Tokens — Colors
 
-## 1. The subject, pinned
+| Name | Value | Token | Role |
+|------|-------|-------|------|
+| Parchment | `#fefffc` | `--color-parchment` | Page canvas — warm off-white slightly creamier than pure white, gives the whole site its book-page atmosphere |
+| Paper | `#ffffff` | `--color-paper` | Card surfaces, section backgrounds, footer — the slightly cooler clean white used for elevated content areas |
+| Linen | `#f9faf7` | `--color-linen` | Input fields, subtle surface wash, nav fill — barely-perceptible off-white that reads as neutral |
+| Ink Black | `#171717` | `--color-ink-black` | Primary foreground token, strong body text where maximum contrast is needed |
+| Graphite | `#2c2c2c` | `--color-graphite` | Headlines and key body text — softer than pure black, pairs with the warm canvas |
+| Charcoal | `#444141` | `--color-charcoal` | Secondary text, button text — the workhorse text tone for body copy and UI labels |
+| Ash | `#646464` | `--color-ash` | Muted helper text, descriptive copy, subdued UI |
+| Fog | `#b4b8b4` | `--color-fog` | Tertiary borders, disabled states, lightest neutral in the scale |
+| Mist | `#dee2de` | `--color-mist` | Hairline borders on cards, buttons, and section dividers — green-tinted to harmonize with illustrations |
+| Twilight | `#282834` | `--color-twilight` | Near-black with a cool blue undertone — used for nav borders, icon strokes, and outlined actions; reads darker than its lightness suggests |
+| Dusk | `#1f1f29` | `--color-dusk` | Filled button background — a near-black with cool violet undertone, the only non-white filled surface in the system |
+| Signal Blue | `#41a1cf` | `--color-signal-blue` | Blue accent for outlined action borders, linked labels, and lightweight interactive emphasis. Do not promote it to the primary CTA color |
+| Cerulean | `#0081c0` | `--color-cerulean` | Vivid blue used for a singular saturated card surface — the lone moment of pure color intensity, used sparingly as atmospheric punctuation |
 
-Eightbit Labs is a five-person studio building **neural systems** and **the web platforms that carry them**. Audience: technical founders, eng leads, developer peers. The page's one job: prove the team ships precise, intelligent software, then route to GitHub.
+## Tokens — Typography
 
-Pass 1 built the page as the **logo** (hourglass convergence). This pass builds it as the **name**: *eightbit* — the byte, the smallest complete unit of meaning. The thesis: a studio that sweats every bit. Everything pixel-flavored on the page carries real data (ASCII codes, place values, identicons derived from real handles) — never decoration.
+### ppmondwest — Custom display serif for headlines and editorial copy — the voice of the brand. Tight -0.04em tracking at large sizes makes it feel set rather than typed; weight 400 even at 54px creates a confident, literary register rather than the 700-weight shouts common in tech. Liga features disabled. · `--font-ppmondwest`
+- **Substitute:** Fraunces, Recoleta, GT Sectra
+- **Weights:** 400, 500
+- **Sizes:** 27px, 40px, 48px, 54px
+- **Line height:** 1.1 (display), 1.5 (lead body)
+- **Letter spacing:** -0.04em at 27px, -0.02em at 40-54px
+- **OpenType features:** `"liga" 0`
+- **Role:** Custom display serif for headlines and editorial copy — the voice of the brand. Tight -0.04em tracking at large sizes makes it feel set rather than typed; weight 400 even at 54px creates a confident, literary register rather than the 700-weight shouts common in tech. Liga features disabled.
 
----
+### af — Custom sans for all UI, body copy, navigation, buttons, and small headings — a quiet, neutral workhorse. Weight 500 is the default for interactive and label text; weight 400 for body. Slight negative tracking (-0.01em) keeps dense UI from feeling airy. · `--font-af`
+- **Substitute:** Inter, Geist, Söhne
+- **Weights:** 400, 500, 600, 700
+- **Sizes:** 13px, 15px, 16px, 18px
+- **Line height:** 1.0 (nav/icons), 1.3 (body-sm/headings), 1.5 (body)
+- **Letter spacing:** -0.01em to -0.012em
+- **Role:** Custom sans for all UI, body copy, navigation, buttons, and small headings — a quiet, neutral workhorse. Weight 500 is the default for interactive and label text; weight 400 for body. Slight negative tracking (-0.01em) keeps dense UI from feeling airy.
 
-## 2. Color
+### Type Scale
 
-Cool porcelain light theme with **one** accent: volt cobalt, the color of "logic high." It appears only on ON states, interactions, and live data. Never cream, never terracotta.
+| Role | Size | Line Height | Letter Spacing | Token |
+|------|------|-------------|----------------|-------|
+| caption | 13px | 1.3 | -0.13px | `--text-caption` |
+| body-sm | 15px | 1 | -0.15px | `--text-body-sm` |
+| subheading | 18px | 1.3 | -0.18px | `--text-subheading` |
+| heading-sm | 27px | 1.5 | -1.08px | `--text-heading-sm` |
+| heading | 40px | 1.1 | -0.8px | `--text-heading` |
+| heading-lg | 48px | 1.1 | -0.96px | `--text-heading-lg` |
+| display | 54px | 1.1 | -1.08px | `--text-display` |
 
-| Name | Hex | Role |
-|------|-----|------|
-| **Paper** | `#F3F5FA` | Page background — cool porcelain with a blue cast |
-| **Card** | `#FFFFFF` | Raised surfaces, the work band |
-| **Ink** | `#0D1017` | Primary text, ON bit keys, logo tile |
-| **Slate** | `#5A6478` | Secondary text, pixel labels |
-| **Line** | `#DDE3F0` | Hairlines, borders, the dot raster |
-| **Volt** | `#2B4BFF` | Accent — logic high. ON keylines, hovers, live readout, links |
-| **Volt-soft** | `rgba(43,75,255,.09)` | Cursor wash, ghost-button hover |
+## Tokens — Spacing & Shapes
 
-**Rule:** Volt = a bit turning on. If it appears somewhere nothing is "on" or interactive, remove it.
+**Base unit:** 4px
 
----
+**Density:** comfortable
 
-## 3. Typography
+### Spacing Scale
 
-Three voices, all Google Fonts — deliberately none reused from pass 1:
+| Name | Value | Token |
+|------|-------|-------|
+| 4 | 4px | `--spacing-4` |
+| 8 | 8px | `--spacing-8` |
+| 12 | 12px | `--spacing-12` |
+| 16 | 16px | `--spacing-16` |
+| 20 | 20px | `--spacing-20` |
+| 24 | 24px | `--spacing-24` |
+| 32 | 32px | `--spacing-32` |
+| 40 | 40px | `--spacing-40` |
+| 48 | 48px | `--spacing-48` |
+| 64 | 64px | `--spacing-64` |
+| 80 | 80px | `--spacing-80` |
 
-- **Display — Unbounded (600/700).** Wide rounded geometric; echoes the rounded logo wordmark. Hero + H2 only, moderate sizes (it's a wide face).
-- **Body — Schibsted Grotesk (400–700).** Modern, warm, legible. Paragraphs, buttons, nav, names.
-- **Utility — Silkscreen (400/700).** The literal 8-bit voice. Tiny uppercase labels, register readout, role tags, place values. Always carries real data.
+### Border Radius
 
-| Role | Font | Size | Notes |
-|------|------|------|-------|
-| Hero | Unbounded 700 | `clamp(2.35rem, 6vw, 4.3rem)` | -0.015em |
-| H2 | Unbounded 600 | `clamp(1.7rem, 3.4vw, 2.6rem)` | |
-| H3 | Schibsted 600 | `1.3rem` | |
-| Body/Lead | Schibsted 400 | `1rem` / `clamp(1.05…1.25rem)` | |
-| Pixel label | Silkscreen 400 | `0.68rem` | 0.12em tracking, uppercase |
+| Element | Value |
+|---------|-------|
+| nav | 50px (pill) |
+| cards | 12px or 16px |
+| buttons | 4px or 8px |
+| large-surfaces | 24px |
 
----
+### Shadows
 
-## 4. Layout
+| Name | Value | Token |
+|------|-------|-------|
+| sm | `rgba(0, 0, 0, 0.15) 0px 2px 6px 0px` | `--shadow-sm` |
+| subtle | `rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) ...` | `--shadow-subtle` |
+| subtle-2 | `rgb(222, 226, 222) 0px 0px 0px 1px` | `--shadow-subtle-2` |
+| subtle-3 | `rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) ...` | `--shadow-subtle-3` |
+| sm-2 | `rgba(0, 0, 0, 0.05) 0px 1px 8px 0px` | `--shadow-sm-2` |
 
-Single column, max `1140px`. Sections: hero (paper) → work band (white, hairline top/bottom) → team (paper) → CTA (paper) → footer (white). No dividers — the alternating bands + generous `--section-y` do the separation. A faint fixed dot raster (26px grid) sits behind the whole page: the pixel grid the site lives on.
+### Layout
 
+- **Page max-width:** 1200px
+- **Section gap:** 32-64px
+- **Card padding:** 16px
+- **Element gap:** 8-12px
+
+## Components
+
+### Frosted Navigation Pill
+**Role:** Primary site navigation
+
+Floating pill at top center of the page, background rgba(255,255,255,0.06) with backdrop-blur(9-20px), 50px border-radius (fully rounded), 1px border in #282834 or white. Contains a small sun/landscape icon, three text links (About, Writing, Careers) in af 15px weight 500, and a bordered 'Get Cofounder' CTA button. The blur and transparency let the illustrated hero show through softly.
+
+### Primary Outlined CTA Button
+**Role:** Main call-to-action
+
+8px border-radius, transparent background, 1px border in #41a1cf (Signal Blue), text in #41a1cf, af 15px weight 500, padding 5px 12px. The chromatic border is the entire visual identity of the button — no fill, no shadow. Arrow icon (→) inside a circle at the right edge.
+
+### Secondary Outlined Button
+**Role:** Secondary action
+
+8px border-radius, transparent background, 1px border in #282834 (Twilight), text in #282834, af 15px weight 500, padding 5px 12px. The neutral cousin of the primary CTA — used when a second action appears alongside.
+
+### Filled Dark Button
+**Role:** Sole filled button variant
+
+8px border-radius, background #1f1f29 (Dusk), text white, border 1px in #282834, af 15px weight 500, padding 8px 16px. Used very sparingly — the only filled button in the system, appears in footer or high-emphasis contexts.
+
+### Ghost Text Link
+**Role:** Inline links and tertiary navigation
+
+No background, no border, text in #444141 or #282834, af 16px weight 400, often with an arrow icon. The default for 'Get to know us' style links. Underlined version used inline within headings for cross-references.
+
+### Frosted Hero Overlay Card
+**Role:** Hero information card
+
+Overlays the illustrated hero. 24px border-radius, semi-transparent background, backdrop-blur, generous padding (80px on the vivid blue variant), white or dark text depending on background. The frosted glass treatment ties the UI to the painted illustration.
+
+### White Content Card
+**Role:** Standard content container
+
+12px border-radius, background #ffffff (Paper), 1px border in #dee2de (Mist), shadow rgba(0,0,0,0.08) 0px 1px 1px / 0px 4px 5px. Padding varies — 0px for media cards, 16px for text cards. The soft green-tinted border is the signature edge treatment.
+
+### Atmospheric Illustration Card
+**Role:** Full-bleed illustrated section
+
+Large format (often 1100000+ px area), 24px border-radius, vivid background color (#0081c0 Cerulean or painted landscape), generous internal padding 80-128px. These are the moments where color is allowed to exist — illustration-as-component.
+
+### Diagram Card
+**Role:** Visual explanation container
+
+16px border-radius, semi-transparent white background, subtle shadow rgba(0,0,0,0.05) 0px 1px 8px, padding 12px. Houses line-art diagrams (isolated agent squares, coordinator nodes) — the visual explanations are always inside this soft frame.
+
+### Input Field
+**Role:** Form text input
+
+0px border-radius (flat edges), background #f9faf7 (Linen), text #444141 (Charcoal), border-bottom-only in #444141. No visible top/side borders — the input is defined by its fill color and a single bottom line, giving a paper-form feel.
+
+### Cookie Consent Banner
+**Role:** Bottom-right notification
+
+White background, rounded corners, small font af 13px, inline text + Decline/Accept text buttons separated by a vertical divider. The minimal, text-first treatment is characteristic — no icons, no color, no urgency.
+
+### Footer
+**Role:** Site footer
+
+White background, large editorial statement in ppmondwest serif, small navigation links in af, generous vertical padding. The footer extends the literary feel — reading like the colophon of a book.
+
+## Do's and Don'ts
+
+### Do
+- Use ppmondwest for any heading 27px and above; never use the sans for display text
+- Set all ppmondwest headings to weight 400, never 600 or 700 — the serif does the work
+- Use 1px solid #dee2de for all card and section borders; this green-tinted hairline is the visual signature
+- Apply 8px border-radius to buttons and 12-16px to cards — avoid mixing 4px and 24px in the same surface
+- Use #41a1cf as a border-only accent on CTAs; the system has no filled chromatic buttons
+- Let the canvas be #fefffc (warm off-white), not pure #ffffff, to maintain the book-page atmosphere
+- Pair display headings with line-height 1.1; pair body text with line-height 1.5 — the contrast is intentional
+
+### Don't
+- Do not use #000000 for text — use #171717 (Ink Black) or #2c2c2c (Graphite) for softer warmth
+- Do not apply box-shadow to buttons; the system uses borders and backdrop-blur instead of elevation
+- Do not introduce new accent colors — the palette is deliberately 95% neutral with one blue
+- Do not use weight 600+ on ppmondwest; the serif's personality is in its thin strokes
+- Do not use rgba or transparency on body text — all text colors should be solid hex values
+- Do not use radius values above 24px except for the navigation pill; this is not a soft-rounded design
+- Do not fill buttons with #41a1cf or #0081c0; Signal Blue and Cerulean are border/surface colors only
+
+## Surfaces
+
+| Level | Name | Value | Purpose |
+|-------|------|-------|---------|
+| 0 | Parchment Canvas | `#fefffc` | Base page background — warm off-white that gives the whole site its editorial register |
+| 1 | Paper Card | `#ffffff` | Elevated content surfaces, footer, white content sections between illustrations |
+| 2 | Linen Wash | `#f9faf7` | Input fields, subtle surface differentiation, nav pill fill at low opacity |
+| 3 | Vivid Blue | `#0081c0` | Rare atmospheric accent surface — the only saturated color in the system, used as a punctuation moment |
+
+## Elevation
+
+- **Navigation Pill:** `rgba(0, 0, 0, 0.15) 0px 2px 6px 0px`
+- **Content Card:** `rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px`
+- **Diagram Card:** `rgba(0, 0, 0, 0.05) 0px 1px 8px 0px`
+- **Atmospheric Card:** `rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px`
+
+## Imagery
+
+Hand-painted digital illustrations carry the emotional narrative: a moonlit New York skyline with cherry blossom branches framing the composition, a dark wildflower meadow with golden poppies and purple flowers, a pixelated yellow-and-pink flower rendered in a low-resolution game-art style. The illustrations are painterly, not flat-vector — they have visible brush texture, atmospheric depth, and cinematic color grading (cool blues for night, warm greens for fields). All illustrations sit full-bleed or at 24px radius against the white canvas. No photography, no product screenshots, no abstract 3D. The pixelated flower is the one element that breaks the painted language — a deliberate contrast. Icons are minimal: a small sun-over-landscape glyph in the nav, simple line arrows in buttons.
+
+## Layout
+
+Full-bleed illustrated hero sections alternate with clean white content sections in a vertical rhythm. The hero is a 100vh painted illustration with a floating frosted-glass navigation pill at top-center and a glassmorphic overlay card at bottom-left containing the headline and CTA. Content sections are max-width 1200px centered, with generous vertical breathing room (64-96px). Headlines are left-aligned and large, often spanning 6-8 columns. Two-column layouts pair text with diagrams or illustrations. The diagram sections use a 6+6 split: explanatory text and figure caption on the left, line-art diagram in a soft-bordered card on the right. Navigation is a single floating pill — no sidebar, no mega-menu. Footer is a white band with a large editorial statement. The overall density is spacious: one idea per screen, never crowded.
+
+## Agent Prompt Guide
+
+## Quick Color Reference
+- text: #2c2c2c (headlines), #444141 (body), #646464 (muted)
+- background: #fefffc (canvas), #ffffff (cards), #f9faf7 (inputs)
+- border: #dee2de (cards), #282834 (nav/actions), #41a1cf (primary CTA)
+- accent: #0081c0 (vivid blue — atmospheric surface only)
+- foreground: #171717
+- primary action: #41a1cf (outlined action border)
+
+## 3-5 Example Component Prompts
+
+1. **Outlined primary CTA button**: 8px border-radius, transparent background, 1px solid border in #41a1cf (Signal Blue), text #41a1cf, af family weight 500 at 15px, padding 5px 12px, with a small arrow icon in a circle on the right.
+
+2. **Editorial headline section**: White (#ffffff) background, 64px vertical padding. Headline in ppmondwest weight 400 at 48px, line-height 1.1, letter-spacing -0.02em, color #2c2c2c. Subtext below in af weight 400 at 16px, line-height 1.5, color #646464.
+
+3. Create an Outlined Primary Action: Transparent background, #41a1cf border and text, 9999px radius, compact pill padding. Use it for the main CTA instead of a filled button.
+
+4. **Content card with hairline border**: 12px border-radius, background #ffffff, 1px solid border in #dee2de (Mist), shadow rgba(0,0,0,0.08) 0px 1px 1px / 0px 4px 5px. Padding 16px. Body text in af 16px weight 400, #444141.
+
+5. **Full-bleed illustrated hero section**: 100vh height, illustration fills entire section (no border-radius or 24px). Floating glassmorphic overlay card at bottom-left: 24px border-radius, semi-transparent white background, backdrop-blur, 32px padding, serif headline in ppmondwest 48px weight 400, white text.
+
+## Similar Brands
+
+- **Stripe** — Same editorial use of large custom serif headings on a warm off-white canvas, with illustrations doing narrative work between clean white content sections
+- **Linear** — Similar restraint in color usage — near-monochrome palette with a single chromatic accent, hairline borders, 8px button radius, and generous spacing
+- **Anthropic** — Shared literary, almost book-like visual register: warm canvas, serif display type, and painted or hand-crafted imagery replacing stock photography
+- **Notion** — Comparable soft-green border tones (#dee2de family) and the same approach of using atmospheric illustrations as structural section dividers
+- **Pitch** — Similar product-as-editorial-object sensibility with custom serif display type, off-white canvas, and full-bleed illustrated sections punctuating clean white content blocks
+
+## Quick Start
+
+### CSS Custom Properties
+
+```css
+:root {
+  /* Colors */
+  --color-parchment: #fefffc;
+  --color-paper: #ffffff;
+  --color-linen: #f9faf7;
+  --color-ink-black: #171717;
+  --color-graphite: #2c2c2c;
+  --color-charcoal: #444141;
+  --color-ash: #646464;
+  --color-fog: #b4b8b4;
+  --color-mist: #dee2de;
+  --color-twilight: #282834;
+  --color-dusk: #1f1f29;
+  --color-signal-blue: #41a1cf;
+  --color-cerulean: #0081c0;
+
+  /* Typography — Font Families */
+  --font-ppmondwest: 'ppmondwest', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-af: 'af', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Typography — Scale */
+  --text-caption: 13px;
+  --leading-caption: 1.3;
+  --tracking-caption: -0.13px;
+  --text-body-sm: 15px;
+  --leading-body-sm: 1;
+  --tracking-body-sm: -0.15px;
+  --text-subheading: 18px;
+  --leading-subheading: 1.3;
+  --tracking-subheading: -0.18px;
+  --text-heading-sm: 27px;
+  --leading-heading-sm: 1.5;
+  --tracking-heading-sm: -1.08px;
+  --text-heading: 40px;
+  --leading-heading: 1.1;
+  --tracking-heading: -0.8px;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.1;
+  --tracking-heading-lg: -0.96px;
+  --text-display: 54px;
+  --leading-display: 1.1;
+  --tracking-display: -1.08px;
+
+  /* Typography — Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --spacing-unit: 4px;
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+
+  /* Layout */
+  --page-max-width: 1200px;
+  --section-gap: 32-64px;
+  --card-padding: 16px;
+  --element-gap: 8-12px;
+
+  /* Border Radius */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 50.496px;
+
+  /* Named Radii */
+  --radius-nav: 50px (pill);
+  --radius-cards: 12px or 16px;
+  --radius-buttons: 4px or 8px;
+  --radius-large-surfaces: 24px;
+
+  /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
+  --shadow-subtle: rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px;
+  --shadow-subtle-2: rgb(222, 226, 222) 0px 0px 0px 1px;
+  --shadow-subtle-3: rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px;
+  --shadow-sm-2: rgba(0, 0, 0, 0.05) 0px 1px 8px 0px;
+
+  /* Surfaces */
+  --surface-parchment-canvas: #fefffc;
+  --surface-paper-card: #ffffff;
+  --surface-linen-wash: #f9faf7;
+  --surface-vivid-blue: #0081c0;
+}
 ```
-┌────────────────────────────────────────────┐
-│ ◢◣ eightbit labs        work team [github] │ sticky blur bar
-├────────────────────────────────────────────┤
-│ 8 BITS · 1 BYTE · 5 ENGINEERS               │
-│ Every bit                                   │ Unbounded 700
-│ engineered.                                 │ volt period
-│ lead… [Explore our GitHub] [See the work]   │
-│                                             │
-│ REG A — WRITING "EIGHTBIT LABS"             │ ← signature
-│ [0][1][1][0][0][1][0][1]  ← flip-dot keys   │
-│ 128 64 32 16 8 4 2 1                        │
-│ BIN 01100101 · HEX 0x65 · CHR e ▌           │
-├────────────── white band ──────────────────┤
-│ WHAT WE BUILD — Two crafts, one stack.      │
-│ [chip sprite / neural]  [window sprite/web] │
-│ [rocket sprite — integrated delivery, wide] │
-├────────────────────────────────────────────┤
-│ THE TEAM — Five people. Full stack.         │
-│ [identicon×5 — generated from handles]      │
-├────────────────────────────────────────────┤
-│        ◢◣  Read the source.  [github]       │
-└────────────────────────────────────────────┘
+
+### Tailwind v4
+
+```css
+@theme {
+  /* Colors */
+  --color-parchment: #fefffc;
+  --color-paper: #ffffff;
+  --color-linen: #f9faf7;
+  --color-ink-black: #171717;
+  --color-graphite: #2c2c2c;
+  --color-charcoal: #444141;
+  --color-ash: #646464;
+  --color-fog: #b4b8b4;
+  --color-mist: #dee2de;
+  --color-twilight: #282834;
+  --color-dusk: #1f1f29;
+  --color-signal-blue: #41a1cf;
+  --color-cerulean: #0081c0;
+
+  /* Typography */
+  --font-ppmondwest: 'ppmondwest', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-af: 'af', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Typography — Scale */
+  --text-caption: 13px;
+  --leading-caption: 1.3;
+  --tracking-caption: -0.13px;
+  --text-body-sm: 15px;
+  --leading-body-sm: 1;
+  --tracking-body-sm: -0.15px;
+  --text-subheading: 18px;
+  --leading-subheading: 1.3;
+  --tracking-subheading: -0.18px;
+  --text-heading-sm: 27px;
+  --leading-heading-sm: 1.5;
+  --tracking-heading-sm: -1.08px;
+  --text-heading: 40px;
+  --leading-heading: 1.1;
+  --tracking-heading: -0.8px;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.1;
+  --tracking-heading-lg: -0.96px;
+  --text-display: 54px;
+  --leading-display: 1.1;
+  --tracking-display: -1.08px;
+
+  /* Spacing */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+
+  /* Border Radius */
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 50.496px;
+
+  /* Shadows */
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
+  --shadow-subtle: rgba(0, 0, 0, 0.08) 0px 1px 1px 0px, rgba(0, 0, 0, 0.08) 0px 4px 5px 0px;
+  --shadow-subtle-2: rgb(222, 226, 222) 0px 0px 0px 1px;
+  --shadow-subtle-3: rgba(0, 0, 0, 0.06) 0px 2px 2px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 5px;
+  --shadow-sm-2: rgba(0, 0, 0, 0.05) 0px 1px 8px 0px;
+}
 ```
 
 ---
 
-## 5. Signature — the byte register
+## Eightbit Labs — implementation notes (pass 3, 2026-07-18)
 
-Eight physical flip-dot keys (3D rotateX flip, staggered 42ms cascade) auto-type `eightbit labs` in ASCII, one char every 1.4s, with place-value labels beneath. **Clicking any key flips that bit and takes the register manual for 7s** (status line switches to `REG A — MANUAL INPUT`), so visitors can compose their own byte and see what character they made. Reduced motion: no auto-typing, keys still clickable.
+The tokens and components above are a style reference, not written for this
+studio — they name no bits, bytes, or team. This section records how they
+were mapped onto Eightbit Labs' own subject (a five-person studio building
+neural systems + web platforms, talking to technical founders/eng peers,
+routing to GitHub), and supersedes pass 2's "The Byte" pixel-register system
+entirely (retired by request — no register, no glyph wall, no scroll
+rasterize; see `## Pass log` above for what that looked like).
 
-**Each surface says exactly one thing (2026-07-12).** The register once carried a `BIN / HEX / CHR` readout row under the keys; once the display wall existed, that row said everything twice — the keys *are* the binary, the wall *is* the character. Cut it. `HEX` was the only value neither could show, so it moved up to sit opposite the status line, right-aligned over the last key. Register is now: status + hex / keys / place values. If a future pass adds another live value here, put it on the status row — don't reopen a readout row.
+**Fonts:** `ppmondwest` and `af` are proprietary to the reference's source
+and unavailable here — used the reference's own listed substitutes,
+**Fraunces** (display serif, weight 400 only, per the reference's "never
+600/700 on the serif" rule) and **Inter** (body/UI), both via Google Fonts.
 
-**The register's output device (added 2026-07-11):** a 12×12 flip-dot wall on the hero's right (`chr out`) renders reg a's current character at poster scale — input bottom-left, output bottom-right. Glyphs are sampled from Silkscreen itself via an offscreen canvas, with the font's 8-unit pixel grid pinned exactly to the dot grid (1 font pixel = 2×2 dots, falling back to 1×1 for wide glyphs) so counters never smear. Weight 400 only — 700 doubles stroke width and fills counters. A metrics fingerprint (caps = x-height = 5/8 em) guards the cache, because canvas can render a fallback face for a few frames after `document.fonts` reports loaded. Lit dots are volt (logic high); each repaint sweeps diagonally via per-dot transition delays. Hidden below 960px.
+**Hero — the one signature element:** full-bleed (100vh) photo of the
+studio's real Dallas skyline, color-graded moody/nocturnal (desaturated,
+darkened, multiply gradient) rather than illustrated — the reference calls
+for painted illustrations of a real place; this studio's "real place" is a
+photo, so the photo stays a photo rather than being redrawn. A frosted
+glass overlay card (parchment at 74% opacity, 20px blur) sits bottom-left
+per the reference's "Frosted Hero Overlay Card" spec, holding the eyebrow,
+headline, lead, and both CTAs. A faint scroll-linked parallax on the photo
+is the only ambient motion — ties back to "the overall density is spacious,
+one idea per screen."
 
-Supporting pixel cast (all data-true):
-- **8×8 capability sprites** — hand-drawn chip / browser / rocket, hop 2 steps on hover.
-- **Team identicons** — deterministic 8×8 mirrored sprites hashed from each GitHub handle (FNV-1a + xorshift).
-- **Hero skyline** — the studio's own skyline photo, run through an 8×8 Bayer ordered dither (downsample to a dot grid, then threshold each cell against the tiled 8×8 matrix) and rebuilt as ink-colored circles in an SVG — never the photo itself. Sits behind the glyph wall on the hero's right, bottom-anchored, faded to nothing via a left-to-right mask so it never crosses into the copy column. Opacity kept low (~0.58) so it reads as atmosphere the register is describing, not a second signature. Generated by a one-off script (not checked in — see pass note below); regenerate by re-running the same ordered-dither approach at `src/assets/hero-skyline.svg` if the source photo changes.
+**Retired/adapted from pass 2:** the pixel-sprite capability icons became
+plain single-weight line icons (node-graph for neural, browser window for
+web, overlapping squares for "integrated delivery") — the reference's
+"simple line arrows... minimal icons" rule doesn't leave room for filled
+pixel blocks. The per-teammate identicons (8×8 hashed pixel grids) became
+**AvatarRing**: a circle with eight tick marks, on/off per bit of the same
+FNV-1a hash of their real handle — quieter, fits the line-art language, and
+keeps the one rule from pass 2 worth keeping: every generated mark must
+still be data-true, not decorative.
 
----
+**Color:** used all thirteen tokens as specified. Cerulean (`#0081c0`) is
+spent in exactly one place — the "Integrated delivery" wide card — per the
+reference's own instruction that it's "the moment where color is allowed to
+exist." Signal Blue (`#41a1cf`) is border-only throughout (nav CTA, primary
+hero button), never filled, per the Do's/Don'ts. Dusk (`#1f1f29`) is the
+one filled button, reserved for the closing "Read the source" CTA — "used
+very sparingly."
 
-## 6. Motion
+**Layout:** floating frosted nav pill, fixed top-center, persists over
+every section (not just the hero) — `.hero + .band` gets extra top padding
+so the pill never overlaps the first heading beneath it. Sections
+alternate parchment/paper/linen per the reference's canvas/paper/linen
+surface levels. Reveal-on-scroll is a single quiet fade + rise
+(IntersectionObserver, `.reveal`/`.is-visible`), replacing pass 2's
+quantized halftone scrub — the new mood calls for restraint, not a gimmick.
 
-- **Load:** hero cascade (eyebrow → headline → lead → CTAs), then keys pop in left-to-right.
-- **Ambient:** only the register typing + blinking cursor block. Nothing else self-animates.
-- **Pointer:** volt radial wash follows the cursor through the hero (CSS vars, no rAF).
-- **Scroll — "rasterize" (page-wide, scrubbed):** every section, card, and heading materializes through a growing-dot halftone mask as it rises from the fold, driven directly by scroll position — scroll back and it de-rezzes again. Progress is quantized to 8 discrete steps with no transitions: the snap between steps is the effect (an 8-bit sprite loading, not a fade). At full progress the mask is dropped (`rz-done`) so shadows and hover brackets render crisp. The fixed dot raster behind the page ticks forward in half-cell (13px) quanta as you scroll, so the whole surface participates. One rAF-throttled scroll listener drives everything via CSS custom properties (`--p` per element, `--raster-y` on `:root`).
-  - *Tried and replaced (2026-07-10):* a fixed "program counter" pill showing scroll position as an 8-bit counter — cut because it was a separate widget rather than an animation of the page itself.
-- **Hover micro:** cards lift + volt pixel corner-brackets snap in; sprites hop in 2 steps and go volt; buttons fill volt; nav links draw a volt underline.
-- All frozen under `prefers-reduced-motion` (global kill + per-component fallbacks).
-
----
-
-## 7. Voice & copy
-
-Plain, confident, a little bit-punny but never cute twice in a row.
-
-- Eyebrow: `8 BITS · 1 BYTE · 5 ENGINEERS`
-- H1: *Every bit engineered.*
-- Work H2: *Two crafts, one stack.*
-- Team H2: *Five people. Full stack.*
-- CTA H2: *Read the source.*
-
----
-
-## 8. Quality floor
-
-320px-safe (register uses `repeat(8,1fr)`, place labels drop at 440px), 2px volt focus ring, reduced motion respected, Ink-on-Paper ≈ 15:1, Slate-on-Paper ≈ 5.6:1, Volt used at label sizes on white ≈ 6:1.
-
----
-
-## Pass log
-
-- **Pass 1 — "Convergence" (superseded):** page built as the hourglass logo. Cool white `#F5F6F4`, orange Flux `#F0531C`, Bricolage Grotesque + Hanken Grotesk + JetBrains Mono, canvas bit-stream funneling to a pinch, pinch dividers, dark "integrated delivery" panel. Don't reuse these faces/accent in future remakes.
-- **Pass 2 — "The Byte" (current, 2026-07-10):** described above. If a pass 3 is ever asked for, the unexplored angles noted were: flip-dot display wall rendering glyphs, Bayer-dither halftone imagery, and a dark "terminal phosphor" theme (was out of scope — brief required light).
-- **Pass 2.1 (2026-07-11):** hero's empty right half filled by cashing in the "flip-dot display wall" angle from the pass-2 notes — as the byte register's chr-out device rather than a separate widget (same lesson as the cut program-counter pill: animate the page's own system, don't add gadgets). Remaining unexplored: Bayer-dither halftone imagery, dark phosphor theme. Also: all rounded rectangles became squircles via `corner-shape: squircle` (Chromium 139+, falls back to round).
-- **Pass 2.2 (2026-07-18):** cashed in the other pass-2 note — a real photo of the studio's skyline, reduced to an 8×8 Bayer-dithered dot field and set behind the glyph wall as hero atmosphere (see §5). Tuning notes for next time: a full-bleed `cover` treatment reads as noise, not a place — keep the art at its own height (`background-size: auto <height>`) so buildings stay legible, and mask it into the paper rather than trying to zoom/crop it to fit. Remaining unexplored: dark phosphor theme.
+**Unresolved / next pass:** the reference's "Cookie Consent Banner" and
+"Input Field" components have no counterpart on this page yet (no forms,
+no cookies) — build them from the same tokens if a contact form or waitlist
+is ever added, rather than improvising new values.

@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import logoMark from '../el logo (1).png'
-import heroSkyline from './assets/hero-skyline.svg'
+import heroSkyline from '../The-Dallas-City-Skyline-01.jpg'
 import './App.css'
 
 /* ------------------------------------------------------------------ */
-/* Brand mark — the hourglass logo in a rounded black tile so the       */
-/* white mark reads on the light theme.                                 */
+/* Brand mark — the hourglass logo in a rounded dusk tile so the        */
+/* white mark reads on the parchment canvas.                            */
 /* ------------------------------------------------------------------ */
 function LogoMark({ className }: { className?: string }) {
   return (
@@ -30,347 +29,156 @@ function GithubIcon() {
 function ArrowIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
-      <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
-/* ------------------------------------------------------------------ */
-/* PixelSprite — renders an 8x8 grid of '0'/'1' strings as crisp        */
-/* SVG pixels. Fill comes from currentColor so CSS drives the state.    */
-/* ------------------------------------------------------------------ */
-function PixelSprite({ rows, className }: { rows: string[]; className?: string }) {
+/* line-art capability icons — thin single-weight strokes, no fill,       */
+/* matching the reference's "simple line arrows / minimal icons" rule.   */
+function NeuralIcon() {
   return (
-    <svg className={className} viewBox="0 0 8 8" aria-hidden="true">
-      {rows.flatMap((row, y) =>
-        [...row].map((c, x) =>
-          c === '1' ? <rect key={`${x}-${y}`} x={x + 0.05} y={y + 0.05} width="0.9" height="0.9" rx="0.12" /> : null,
-        ),
-      )}
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
+      <circle cx="16" cy="16" r="3.2" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="6" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="26" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="6" cy="24" r="2.2" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="26" cy="24" r="2.2" stroke="currentColor" strokeWidth="1.4" />
+      <path
+        d="M8 9.6 13.6 14M23.9 9.6 18.4 14M8 22.4l5.6-4.4M23.9 22.4l-5.6-4.4"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
 
-/* hand-drawn 8x8 sprites for the three capabilities */
-const SPRITE_NEURAL = [
-  '00100100',
-  '01111110',
-  '11000011',
-  '01011010',
-  '01011010',
-  '11000011',
-  '01111110',
-  '00100100',
-]
+function WebIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
+      <rect x="4" y="6" width="24" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M4 12h24" stroke="currentColor" strokeWidth="1.4" />
+      <circle cx="8" cy="9" r="0.9" fill="currentColor" />
+      <circle cx="11.2" cy="9" r="0.9" fill="currentColor" />
+      <path d="M9 17h9M9 21h14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
 
-const SPRITE_WEB = [
-  '11111111',
-  '10101001',
-  '11111111',
-  '10000001',
-  '10111001',
-  '10000001',
-  '10110001',
-  '11111111',
-]
+function ShipIcon() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
+      <rect x="5" y="5" width="16" height="16" rx="2.5" stroke="currentColor" strokeWidth="1.4" />
+      <rect x="11" y="11" width="16" height="16" rx="2.5" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  )
+}
 
-const SPRITE_SHIP = [
-  '00011000',
-  '00111100',
-  '00100100',
-  '00111100',
-  '01111110',
-  '11011011',
-  '00100100',
-  '01000010',
-]
-
-/* deterministic 8x8 identicon from a handle — every teammate gets a
-   unique sprite derived from their GitHub name, mirrored for symmetry */
-function identiconRows(seed: string): string[] {
+/* ------------------------------------------------------------------ */
+/* AvatarRing — a quiet nod to the studio's name without the old pixel   */
+/* voice: eight tick marks around a circle, on/off per bit, deterministic */
+/* from each teammate's real handle (FNV-1a hash → low 8 bits).          */
+/* ------------------------------------------------------------------ */
+function ringBits(seed: string): boolean[] {
   let h = 2166136261
   for (const ch of seed) {
     h ^= ch.charCodeAt(0)
     h = Math.imul(h, 16777619) >>> 0
   }
-  const rows: string[] = []
-  for (let y = 0; y < 8; y++) {
-    let half = ''
-    for (let x = 0; x < 4; x++) {
-      h ^= h << 13
-      h >>>= 0
-      h ^= h >>> 17
-      h ^= h << 5
-      h >>>= 0
-      half += h % 100 < 44 ? '1' : '0'
-    }
-    rows.push(half + [...half].reverse().join(''))
-  }
-  return rows
+  return Array.from({ length: 8 }, (_, i) => ((h >>> i) & 1) === 1)
 }
 
-/* ------------------------------------------------------------------ */
-/* ByteRegister — the signature. Eight flip-dot keys type out           */
-/* "eightbit labs" in ASCII; click any bit to take the register over    */
-/* and compose your own byte. Readout decodes bin / hex / char live.    */
-/* ------------------------------------------------------------------ */
-const MESSAGE = 'eightbit labs'
-
-/* how long a click holds the register in manual mode */
-function manualDeadline(): number {
-  return Date.now() + 7000
-}
-
-const toBits = (code: number): boolean[] =>
-  code
-    .toString(2)
-    .padStart(8, '0')
-    .split('')
-    .map((c) => c === '1')
-
-function ByteRegister({ onCode }: { onCode?: (code: number) => void }) {
-  const [bits, setBits] = useState<boolean[]>(() => toBits(MESSAGE.charCodeAt(0)))
-  const [manual, setManual] = useState(false)
-  const manualUntil = useRef(0)
-  const idxRef = useRef(0)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setInterval(() => {
-      if (Date.now() < manualUntil.current) return
-      setManual(false)
-      idxRef.current = (idxRef.current + 1) % MESSAGE.length
-      setBits(toBits(MESSAGE.charCodeAt(idxRef.current)))
-    }, 1400)
-    return () => clearInterval(t)
-  }, [])
-
-  const handleFlip = (i: number) => {
-    manualUntil.current = manualDeadline()
-    setManual(true)
-    setBits((b) => b.map((v, j) => (j === i ? !v : v)))
-  }
-
-  const code = bits.reduce((acc, b, i) => acc | (b ? 1 << (7 - i) : 0), 0)
-
-  useEffect(() => {
-    onCode?.(code)
-  }, [code, onCode])
-
-  const hex = `0x${code.toString(16).padStart(2, '0').toUpperCase()}`
-
-  /* The keys are the binary and the display wall is the character, so
-     the register states only what neither can show: what it's doing,
-     and the byte's value. */
-  return (
-    <div className="register">
-      <p className="pix register-status">
-        {/* one flex child per side — keeps "· resuming…" glued to the status */}
-        <span>
-          {manual ? (
-            <>reg a — manual input<span className="volt-txt"> · resuming…</span></>
-          ) : (
-            <>reg a — writing “{MESSAGE}”</>
-          )}
-        </span>
-        <span className="register-hex">{hex}</span>
-      </p>
-
-      <div className="register-keys" role="group" aria-label="Interactive byte register — click a key to flip a bit">
-        {bits.map((on, i) => (
-          <button
-            key={i}
-            type="button"
-            className={`bit-key${on ? ' on' : ''}`}
-            style={{ '--i': i } as CSSProperties}
-            aria-pressed={on}
-            aria-label={`bit ${7 - i}, value ${1 << (7 - i)}, ${on ? 'on' : 'off'}`}
-            onClick={() => handleFlip(i)}
-          >
-            <span className="bit-flipper" aria-hidden="true">
-              <span className="face face-0">0</span>
-              <span className="face face-1">1</span>
-            </span>
-          </button>
-        ))}
-      </div>
-
-      <div className="register-places pix" aria-hidden="true">
-        {[128, 64, 32, 16, 8, 4, 2, 1].map((v) => (
-          <span key={v}>{v}</span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/* GlyphDisplay — the register's output device. A 12×12 flip-dot wall   */
-/* renders whatever character reg a currently holds, at poster scale.   */
-/* Glyphs are sampled live from the site's own pixel face (Silkscreen)  */
-/* via an offscreen canvas, so the wall speaks the same 8-bit voice.    */
-/* Volt dots = logic high; every change repaints in a diagonal sweep    */
-/* like a real flip-dot panel.                                          */
-/* ------------------------------------------------------------------ */
-const DOT_GRID = 12
-const DOT_BLANK: boolean[] = new Array(DOT_GRID * DOT_GRID).fill(false)
-const glyphCache = new Map<string, boolean[]>()
-
-/* one dot = one Silkscreen font pixel, in canvas px */
-const SILK_UNIT = 10
-
-/* Silkscreen fingerprint: it is the only face in the stack whose caps
-   AND x-height both measure exactly 5/8 em. True only once the canvas
-   can really draw with it (which can lag document.fonts readiness). */
-function silkscreenLive(ctx: CanvasRenderingContext2D): boolean {
-  ctx.font = `400 ${SILK_UNIT * 8}px Silkscreen, ui-monospace, monospace`
-  const asc = (s: string) => ctx.measureText(s).actualBoundingBoxAscent
-  return Math.abs(asc('E') - SILK_UNIT * 5) < 1 && Math.abs(asc('x') - SILK_UNIT * 5) < 1
-}
-
-function sampleGlyph(chr: string): boolean[] {
-  if (!chr) return DOT_BLANK
-  /* weight 400 is Silkscreen's true single-pixel-stroke cut — 700
-     doubles stroke width and fills the counters of wide glyphs */
-  const font = (px: number) => `400 ${px}px Silkscreen, ui-monospace, monospace`
-
-  const cell = SILK_UNIT
-  const size = DOT_GRID * cell
-  const canvas = document.createElement('canvas')
-  canvas.width = size
-  canvas.height = size
-  const ctx = canvas.getContext('2d', { willReadFrequently: true })
-  if (!ctx) return DOT_BLANK
-
-  ctx.textBaseline = 'alphabetic'
-
-  /* never cache a fallback-face render — it would stick forever */
-  const silkReady = silkscreenLive(ctx)
-  const cached = silkReady ? glyphCache.get(chr) : undefined
-  if (cached) return cached
-  ctx.font = font(cell * 8)
-
-  /* Silkscreen draws on an 8-unit em grid: caps 5 units, no descenders,
-     so at font-size 8×cell one font pixel is exactly one dot. Render at
-     2×2 dots per font pixel (poster scale) when the glyph fits, and pin
-     the font's pixel grid to the dot grid so counters never smear. */
-  const probe = ctx.measureText(chr)
-  const probeCells = Math.max(1, Math.round((probe.actualBoundingBoxLeft + probe.actualBoundingBoxRight) / cell))
-  const scale = probeCells * 2 <= DOT_GRID ? 2 : 1
-  ctx.font = font(cell * 8 * scale)
-  const m = ctx.measureText(chr)
-  const wCells = Math.max(1, Math.round((m.actualBoundingBoxLeft + m.actualBoundingBoxRight) / cell))
-  const startCol = Math.max(0, Math.floor((DOT_GRID - wCells) / 2))
-  const baselineRow = scale === 2 ? 11 : 8
-  ctx.fillText(chr, startCol * cell + m.actualBoundingBoxLeft, baselineRow * cell)
-
-  const { data } = ctx.getImageData(0, 0, size, size)
-  const dots: boolean[] = []
-  for (let gy = 0; gy < DOT_GRID; gy++) {
-    for (let gx = 0; gx < DOT_GRID; gx++) {
-      let lit = 0
-      for (let y = gy * cell; y < (gy + 1) * cell; y++) {
-        for (let x = gx * cell; x < (gx + 1) * cell; x++) {
-          if (data[(y * size + x) * 4 + 3] > 128) lit++
-        }
-      }
-      dots.push(lit / (cell * cell) > 0.5)
-    }
-  }
-  if (silkReady) glyphCache.set(chr, dots)
-  return dots
-}
-
-if (import.meta.env.DEV) {
-  // debug hook so tooling can inspect exactly what the wall renders
-  ;(window as unknown as Record<string, unknown>).__sampleGlyph = sampleGlyph
-}
-
-function GlyphDisplay({ code }: { code: number }) {
-  const [fontReady, setFontReady] = useState(false)
-
-  useEffect(() => {
-    let alive = true
-    let raf = 0
-    const ctx = document.createElement('canvas').getContext('2d')
-    /* canvas can lag document.fonts by a few frames — poll the
-       fingerprint until the face is really drawable, then resample */
-    const tick = () => {
-      if (!alive || !ctx) return
-      if (silkscreenLive(ctx)) setFontReady(true)
-      else raf = requestAnimationFrame(tick)
-    }
-    document.fonts
-      .load('400 80px Silkscreen')
-      .then(tick)
-      .catch(() => {})
-    return () => {
-      alive = false
-      cancelAnimationFrame(raf)
-    }
-  }, [])
-
-  const chr = code === 32 ? '' : code > 32 && code < 127 ? String.fromCharCode(code) : '·'
-  const dots = useMemo(() => sampleGlyph(chr), [chr, fontReady]) // eslint-disable-line react-hooks/exhaustive-deps
+function AvatarRing({ seed }: { seed: string }) {
+  const bits = useMemo(() => ringBits(seed), [seed])
+  const cx = 28
+  const cy = 28
+  const rOuter = 25
+  const rInner = 19
 
   return (
-    <figure className="glyph-display h-in h-in-5" aria-hidden="true">
-      <div className="glyph-grid">
-        {dots.map((on, i) => (
-          <span
+    <svg className="avatar-ring" viewBox="0 0 56 56" aria-hidden="true">
+      <circle cx={cx} cy={cy} r={14} fill="none" stroke="currentColor" strokeWidth="1" opacity="0.35" />
+      {bits.map((on, i) => {
+        const angle = (i * 45 - 90) * (Math.PI / 180)
+        const x1 = cx + rInner * Math.cos(angle)
+        const y1 = cy + rInner * Math.sin(angle)
+        const x2 = cx + rOuter * Math.cos(angle)
+        const y2 = cy + rOuter * Math.sin(angle)
+        return (
+          <line
             key={i}
-            className={`glyph-dot${on ? ' on' : ''}`}
-            style={{ '--d': `${((i % DOT_GRID) + Math.floor(i / DOT_GRID)) * 16}ms` } as CSSProperties}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="currentColor"
+            strokeWidth={on ? 2.2 : 1.3}
+            strokeLinecap="round"
+            opacity={on ? 1 : 0.3}
           />
-        ))}
-      </div>
-      <figcaption className="pix glyph-label">
-        chr out
-        <span className="cursor-block" />
-      </figcaption>
-    </figure>
+        )
+      })}
+    </svg>
   )
 }
 
 /* ------------------------------------------------------------------ */
+/* Reveal — a quiet fade + rise as sections enter view. Restrained on     */
+/* purpose: one ambient effect, no scroll-scrubbed gimmicks.              */
+/* ------------------------------------------------------------------ */
+function useReveal() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.reveal'))
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach((el) => el.classList.add('is-visible'))
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            io.unobserve(entry.target)
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+}
 
 const CAPS = [
   {
-    tag: 'neural',
     title: 'Neural systems',
     body: 'Model-backed features, inference pipelines, and evaluation loops built to run inside real products — not demos.',
-    meta: ['inference', 'pipelines', 'evals'],
-    sprite: SPRITE_NEURAL,
+    meta: ['Inference', 'Pipelines', 'Evals'],
+    Icon: NeuralIcon,
   },
   {
-    tag: 'web',
     title: 'Web engineering',
     body: 'Fast interfaces, API-connected apps, and developer tooling that stays clear and maintainable as it grows.',
-    meta: ['interfaces', 'apis', 'tooling'],
-    sprite: SPRITE_WEB,
+    meta: ['Interfaces', 'APIs', 'Tooling'],
+    Icon: WebIcon,
   },
 ]
 
 const TEAM = [
-  { name: 'Cookiemonster', role: 'head developer', href: 'https://github.com/btfcookies', handle: 'btfcookies' },
-  { name: 'denial_guzheng', role: 'head engineer', href: 'https://github.com/Eightbit-Labs', handle: 'denial_guzheng' },
-  { name: 'WerterTheBug', role: 'senior developer', href: 'https://github.com/WerterTheBug', handle: 'WerterTheBug' },
-  { name: 'gir0fa', role: 'senior developer', href: 'https://github.com/wbrous', handle: 'wbrous' },
-  { name: 'Mr_Dragon0011', role: 'developer', href: 'https://github.com/MrDragon0011', handle: 'MrDragon0011' },
+  { name: 'Cookiemonster', role: 'Head developer', href: 'https://github.com/btfcookies', handle: 'btfcookies' },
+  { name: 'denial_guzheng', role: 'Head engineer', href: 'https://github.com/Eightbit-Labs', handle: 'denial_guzheng' },
+  { name: 'WerterTheBug', role: 'Senior developer', href: 'https://github.com/WerterTheBug', handle: 'WerterTheBug' },
+  { name: 'gir0fa', role: 'Senior developer', href: 'https://github.com/wbrous', handle: 'wbrous' },
+  { name: 'Mr_Dragon0011', role: 'Developer', href: 'https://github.com/MrDragon0011', handle: 'MrDragon0011' },
 ]
 
 function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
-  const rows = useMemo(() => identiconRows(member.handle), [member.handle])
   return (
-    <a
-      className="team-card card rz"
-      href={member.href}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <PixelSprite rows={rows} className="team-sprite" />
+    <a className="team-card card reveal" href={member.href} target="_blank" rel="noreferrer">
+      <AvatarRing seed={member.handle} />
       <span className="team-name">{member.name}</span>
-      <span className="pix team-role">{member.role}</span>
+      <span className="team-role">{member.role}</span>
       <span className="team-handle">
         <GithubIcon />
         {member.handle}
@@ -381,41 +189,32 @@ function TeamCard({ member }: { member: (typeof TEAM)[number] }) {
 
 function App() {
   const heroRef = useRef<HTMLElement>(null)
-  const [heroCode, setHeroCode] = useState(() => MESSAGE.charCodeAt(0))
+  const navRef = useRef<HTMLElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+  useReveal()
 
-  /* Rasterize — the page-wide scroll animation. Every .rz element's
-     visibility is scrubbed directly by scroll position: it materializes
-     through a growing-dot halftone mask as it rises from the fold, and
-     de-rezzes again if you scroll back. Progress is quantized to 8
-     discrete steps, so the whole page snaps in and out like an 8-bit
-     sprite loading. The fixed dot raster behind the page ticks along
-     in half-cell steps via --raster-y. */
+  /* one scroll listener drives three quiet, related effects: the hero      */
+  /* photo's parallax drift, the nav pill firming up once you leave the     */
+  /* hero, and a thin scroll-progress fill inset in the pill. */
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.rz'))
-    const root = document.documentElement
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      els.forEach((el) => {
-        el.style.setProperty('--p', '1')
-        el.classList.add('rz-done')
-      })
-      return
-    }
-
-    const STEPS = 8
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const hero = heroRef.current
+    const nav = navRef.current
+    const progress = progressRef.current
     let raf = 0
 
     const update = () => {
       raf = 0
-      const vh = window.innerHeight
-      root.style.setProperty('--raster-y', `${Math.round(window.scrollY / 26) * 13}px`)
-      for (const el of els) {
-        const top = el.getBoundingClientRect().top
-        // materialize across the bottom 38% of the viewport
-        const p = Math.max(0, Math.min(1, (vh - top) / (vh * 0.38)))
-        const q = Math.round(p * STEPS) / STEPS
-        el.style.setProperty('--p', q.toFixed(3))
-        el.classList.toggle('rz-done', q === 1)
+      const y = window.scrollY
+      if (hero && !reduceMotion) {
+        hero.style.setProperty('--drift', `${Math.min(y, window.innerHeight) * 0.08}px`)
+      }
+      if (nav) {
+        nav.classList.toggle('is-scrolled', y > 40)
+      }
+      if (progress) {
+        const max = document.documentElement.scrollHeight - window.innerHeight
+        progress.style.setProperty('--scroll-progress', String(max > 0 ? Math.min(1, y / max) : 0))
       }
     }
 
@@ -433,80 +232,71 @@ function App() {
     }
   }, [])
 
-  const onHeroPointer = (e: ReactPointerEvent<HTMLElement>) => {
-    const el = heroRef.current
-    if (!el) return
-    const r = el.getBoundingClientRect()
-    el.style.setProperty('--mx', `${e.clientX - r.left}px`)
-    el.style.setProperty('--my', `${e.clientY - r.top}px`)
-  }
-
   return (
     <div className="page">
-      <header className="nav">
+      <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
+
+      <header className="nav" ref={navRef}>
         <a className="nav-brand" href="#top" aria-label="Eightbit Labs home">
           <LogoMark className="nav-mark" />
           <span>eightbit labs</span>
         </a>
         <nav className="nav-links">
-          <a href="#work">work</a>
-          <a href="#team">team</a>
+          <a href="#work">Work</a>
+          <a href="#team">Team</a>
           <a className="nav-gh" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
             <GithubIcon />
-            <span>github</span>
+            <span>GitHub</span>
           </a>
         </nav>
       </header>
 
       <main id="top">
         {/* ----------------------------- HERO ----------------------------- */}
-        <section className="hero" ref={heroRef} onPointerMove={onHeroPointer}>
-          <div
-            className="hero-skyline"
-            style={{ backgroundImage: `url(${heroSkyline})` }}
-            aria-hidden="true"
-          />
-          <div className="wrap hero-inner">
-            <div className="hero-copy">
-              <p className="pix eyebrow h-in h-in-1">8 bits · 1 byte · 5 engineers</p>
-              <h1 className="hero-title h-in h-in-2">
-                Every bit<br />engineered<span className="volt-txt">.</span>
-              </h1>
-              <p className="lead hero-lead h-in h-in-3">
+        <section className="hero" ref={heroRef}>
+          <div className="hero-photo-parallax">
+            <div className="hero-photo" style={{ backgroundImage: `url(${heroSkyline})` }} aria-hidden="true" />
+          </div>
+          <div className="hero-grade" aria-hidden="true" />
+
+          <div className="hero-overlay-wrap">
+            <div className="hero-card">
+              <p className="eyebrow">5 engineers · neural systems + web</p>
+              <h1 className="hero-title">Every bit engineered.</h1>
+              <p className="lead hero-lead">
                 Eightbit Labs is a five-person studio building neural systems and the
                 web platforms that carry them — precise from the first byte to production.
               </p>
-              <div className="cta-row h-in h-in-4">
+              <div className="cta-row">
                 <a className="btn btn-primary" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
                   Explore our GitHub
-                  <ArrowIcon />
+                  <span className="btn-arrow">
+                    <ArrowIcon />
+                  </span>
                 </a>
-                <a className="btn btn-ghost" href="#work">See the work</a>
+                <a className="btn btn-secondary" href="#work">
+                  See the work
+                </a>
               </div>
-
-              <ByteRegister onCode={setHeroCode} />
             </div>
-
-            <GlyphDisplay code={heroCode} />
           </div>
         </section>
 
         {/* -------------------------- CAPABILITIES ------------------------ */}
         <section className="band" id="work">
           <div className="wrap">
-            <div className="section-head rz">
-              <p className="pix eyebrow">what we build</p>
+            <div className="section-head reveal">
+              <p className="eyebrow">What we build</p>
               <h2>Two crafts, one stack.</h2>
             </div>
 
             <div className="caps-grid">
               {CAPS.map((c) => (
-                <article key={c.tag} className="cap-card card rz">
-                  <PixelSprite rows={c.sprite} className="cap-sprite" />
-                  <p className="pix cap-tag">{c.tag}</p>
+                <article key={c.title} className="cap-card card reveal">
+                  <c.Icon />
                   <h3>{c.title}</h3>
                   <p className="cap-body">{c.body}</p>
-                  <ul className="cap-meta pix">
+                  <ul className="cap-meta">
                     {c.meta.map((m) => (
                       <li key={m}>{m}</li>
                     ))}
@@ -514,10 +304,9 @@ function App() {
                 </article>
               ))}
 
-              <article className="cap-card cap-wide card rz">
-                <PixelSprite rows={SPRITE_SHIP} className="cap-sprite" />
+              <article className="cap-card cap-wide reveal">
+                <ShipIcon />
                 <div className="cap-wide-copy">
-                  <p className="pix cap-tag">neural + web</p>
                   <h3>Integrated delivery</h3>
                   <p className="cap-body">
                     Most products need both. We design the model and the interface as one
@@ -533,12 +322,12 @@ function App() {
         {/* ------------------------------ TEAM ---------------------------- */}
         <section className="team" id="team">
           <div className="wrap">
-            <div className="section-head team-head rz">
+            <div className="section-head team-head reveal">
               <div>
-                <p className="pix eyebrow">the team</p>
+                <p className="eyebrow">The team</p>
                 <h2>Five people. Full stack.</h2>
               </div>
-              <p className="pix team-count">sprites generated from each handle</p>
+              <p className="team-count">Each mark is drawn from a real handle</p>
             </div>
 
             <div className="team-grid">
@@ -551,17 +340,15 @@ function App() {
 
         {/* ------------------------------ CTA ----------------------------- */}
         <section className="cta">
-          <div className="wrap cta-inner rz">
-            <LogoMark className="cta-mark" />
+          <div className="wrap cta-inner reveal">
             <h2>Read the source.</h2>
             <p className="lead cta-lead">
               Active work and technical direction live on GitHub — the fastest way to
               see where Eightbit Labs is headed.
             </p>
-            <a className="btn btn-primary btn-lg" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
+            <a className="btn btn-filled" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
               <GithubIcon />
               github.com/Eightbit-Labs
-              <ArrowIcon />
             </a>
           </div>
         </section>
@@ -573,7 +360,7 @@ function App() {
             <LogoMark className="nav-mark" />
             <span>eightbit labs</span>
           </a>
-          <p className="pix footer-meta">neural systems + web engineering · {new Date().getFullYear()}</p>
+          <p className="footer-meta">Neural systems + web engineering · {new Date().getFullYear()}</p>
         </div>
       </footer>
     </div>
