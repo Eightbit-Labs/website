@@ -158,11 +158,39 @@
   overflow: hidden;
 }
 
+/* Bayer-dithered skyline — reduced to an 8x8 ordered-dither dot field
+   in the site's own pixel voice, so a real place becomes the same unit
+   the register speaks in: a grid of on/off dots. Kept to the hero's
+   right half, behind the glyph wall, so it reads as what the register
+   is describing rather than fighting the headline for contrast. Never
+   a photo — it dissolves into the paper on every edge via mask. */
+.hero-skyline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(320px, 50vh, 480px);
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: auto 100%;
+  opacity: 0.58;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 54%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 54%);
+}
+
+@media (max-width: 960px) {
+  .hero-skyline {
+    display: none;
+  }
+}
+
 /* cursor-following volt wash */
 .hero::after {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 30%), var(--volt-soft), transparent 70%);
 }

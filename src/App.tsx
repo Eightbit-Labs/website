@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import logoMark from '../el logo (1).png'
+import heroSkyline from './assets/hero-skyline.svg'
 import './App.css'
 
 /* ------------------------------------------------------------------ */
@@ -460,6 +461,11 @@ function App() {
       <main id="top">
         {/* ----------------------------- HERO ----------------------------- */}
         <section className="hero" ref={heroRef} onPointerMove={onHeroPointer}>
+          <div
+            className="hero-skyline"
+            style={{ backgroundImage: `url(${heroSkyline})` }}
+            aria-hidden="true"
+          />
           <div className="wrap hero-inner">
             <div className="hero-copy">
               <p className="pix eyebrow h-in h-in-1">8 bits · 1 byte · 5 engineers</p>
