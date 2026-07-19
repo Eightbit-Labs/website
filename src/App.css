@@ -412,6 +412,33 @@
   background: var(--linen);
 }
 
+/* every section below the hero gets the same soft dot grid instead of      */
+/* flat white — a quiet nod to "every bit engineered" (the same bit motif   */
+/* the AvatarRing already draws on) rather than a decorative afterthought.  */
+/* A ::before layer keeps this independent of each section's own            */
+/* background shorthand, so it can't be reset by it regardless of order.    */
+.band,
+.team,
+.cta,
+.footer {
+  position: relative;
+  isolation: isolate;
+}
+
+.band::before,
+.team::before,
+.cta::before,
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(var(--twilight) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.06;
+}
+
 .section-head {
   margin-bottom: clamp(2.2rem, 5vh, 3.2rem);
 }
