@@ -94,29 +94,68 @@
   gap: clamp(0.8rem, 2.2vw, 1.4rem);
   padding: 0.55rem 0.6rem 0.55rem 1.1rem;
   border-radius: var(--r-pill);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.52));
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)) padding-box,
+    linear-gradient(155deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 30%, rgba(255, 255, 255, 0.12) 52%, rgba(18, 18, 26, 0.16) 100%) border-box;
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.85) inset,
-    0 -1px 0 rgba(40, 40, 52, 0.06) inset,
-    rgba(23, 23, 34, 0.12) 0px 14px 34px -10px,
-    rgba(23, 23, 34, 0.09) 0px 5px 12px -4px,
-    rgba(23, 23, 34, 0.16) 0px 2px 5px 0px;
+    /* glass rim: bright catch-light along the top, soft dark seam along the base */
+    0 1.5px 0 rgba(255, 255, 255, 0.95) inset,
+    0 -1.5px 1px rgba(20, 20, 30, 0.14) inset,
+    -1px 0 1px rgba(255, 255, 255, 0.5) inset,
+    /* stacked ambient shadow: tight contact shadow through to a deep, soft cast */
+    0 1px 1px rgba(18, 18, 28, 0.22),
+    0 6px 14px -6px rgba(18, 18, 28, 0.28),
+    0 18px 32px -10px rgba(18, 18, 28, 0.26),
+    0 36px 64px -18px rgba(18, 18, 28, 0.32);
   max-width: calc(100vw - 2rem);
   animation: nav-drop 0.7s var(--ease) both;
   transition: background 0.35s var(--ease), box-shadow 0.35s var(--ease), padding 0.35s var(--ease);
 }
 
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.22) 18%, rgba(255, 255, 255, 0) 38%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.nav::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -14px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(18, 18, 28, 0.3), rgba(18, 18, 28, 0) 72%);
+  filter: blur(4px);
+  z-index: -1;
+  transition: opacity 0.35s var(--ease);
+}
+
 .nav.is-scrolled {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.82));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86)) padding-box,
+    linear-gradient(155deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.45) 30%, rgba(255, 255, 255, 0.14) 52%, rgba(18, 18, 26, 0.14) 100%) border-box;
   padding-block: 0.45rem;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    rgba(23, 23, 34, 0.16) 0px 18px 42px -12px,
-    rgba(23, 23, 34, 0.1) 0px 5px 12px -3px,
-    rgba(23, 23, 34, 0.12) 0px 1px 3px 0px;
+    0 1.5px 0 rgba(255, 255, 255, 1) inset,
+    0 -1.5px 1px rgba(20, 20, 30, 0.12) inset,
+    -1px 0 1px rgba(255, 255, 255, 0.55) inset,
+    0 1px 1px rgba(18, 18, 28, 0.2),
+    0 8px 16px -6px rgba(18, 18, 28, 0.3),
+    0 22px 40px -12px rgba(18, 18, 28, 0.3),
+    0 44px 72px -20px rgba(18, 18, 28, 0.3);
+}
+
+.nav.is-scrolled::after {
+  opacity: 0.7;
 }
 
 .nav-brand {
