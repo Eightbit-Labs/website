@@ -91,7 +91,7 @@
   z-index: 50;
   display: flex;
   align-items: center;
-  gap: clamp(1.2rem, 4vw, 2.8rem);
+  gap: clamp(0.8rem, 2.2vw, 1.4rem);
   padding: 0.55rem 0.6rem 0.55rem 1.1rem;
   border-radius: var(--r-pill);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.52));
