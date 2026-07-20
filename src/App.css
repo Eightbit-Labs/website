@@ -84,6 +84,9 @@
 }
 
 .nav {
+  /* liquid-glass.md: Apple-style bouncy spring, kept local to the nav so it   */
+  /* never leaks into the rest of the site's easing. */
+  --nav-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
   position: fixed;
   top: clamp(14px, 3vh, 24px);
   left: 50%;
@@ -98,8 +101,10 @@
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)) padding-box,
     linear-gradient(155deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 30%, rgba(255, 255, 255, 0.12) 52%, rgba(18, 18, 26, 0.16) 100%) border-box;
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  backdrop-filter: blur(18px) saturate(180%);
+  /* Deep Refraction: extreme blur + over-saturation so the floating pill    */
+  /* reads as poured glass refracting whatever scrolls beneath it. */
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  backdrop-filter: blur(50px) saturate(200%);
   box-shadow:
     /* glass rim: bright catch-light along the top, soft dark seam along the base */
     0 1.5px 0 rgba(255, 255, 255, 0.95) inset,
@@ -158,6 +163,47 @@
   opacity: 0.7;
 }
 
+/* Interactive Glare: a soft spotlight that tracks the cursor, positioned    */
+/* via --mx/--my custom properties set on pointermove (App.tsx). Its own     */
+/* overflow: hidden clips it to the pill shape without needing overflow      */
+/* on .nav itself, which would clip the ambient shadow in ::after. */
+.nav-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 60%);
+  mix-blend-mode: overlay;
+}
+
+.nav:hover .nav-glare {
+  opacity: 1;
+}
+
+.nav > .nav-brand,
+.nav > .nav-links {
+  animation: rise-in 0.6s var(--ease) both;
+}
+
+.nav > .nav-brand {
+  animation-delay: 0.55s;
+}
+
+.nav > .nav-links {
+  animation-delay: 0.68s;
+}
+
+.nav .nav-brand {
+  transition: transform 0.5s var(--nav-spring);
+}
+
+.nav .nav-brand:active {
+  transform: scale(0.92);
+}
+
 .nav-brand {
   display: inline-flex;
   align-items: center;
@@ -182,17 +228,41 @@
 }
 
 .nav-links {
+  position: relative;
   display: flex;
   align-items: center;
   gap: clamp(0.8rem, 2.2vw, 1.4rem);
 }
 
-.nav-links a:not(.nav-gh) {
+/* Sliding Active Pill: absolutely positioned, width/position recalculated   */
+/* on scroll (App.tsx) and eased in with spring physics. Vertical inset is   */
+/* fixed in CSS so the JS only ever has to drive width + horizontal offset. */
+.nav-pill {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(65, 161, 207, 0.24), rgba(65, 161, 207, 0.1));
+  border: 1px solid rgba(65, 161, 207, 0.38);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 4px 10px -4px rgba(65, 161, 207, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s var(--nav-spring), width 0.5s var(--nav-spring), opacity 0.3s var(--ease);
+  will-change: transform, width;
+}
+
+.nav-links > a {
   position: relative;
+  z-index: 1;
+}
+
+.nav-links a:not(.nav-gh) {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--charcoal);
-  transition: color 0.2s var(--ease);
+  transition: color 0.2s var(--ease), transform 0.5s var(--nav-spring);
 }
 
 .nav-links a:not(.nav-gh)::after {
@@ -216,6 +286,20 @@
   transform: scaleX(1);
 }
 
+/* the pill itself carries the active state now, so the underline stays     */
+/* reserved for hover on inactive links rather than doubling up. */
+.nav-links a:not(.nav-gh).is-active {
+  color: var(--graphite);
+}
+
+.nav-links a:not(.nav-gh).is-active::after {
+  transform: scaleX(0);
+}
+
+.nav-links a:not(.nav-gh):active {
+  transform: scale(0.92);
+}
+
 .nav-gh {
   display: inline-flex;
   align-items: center;
@@ -233,6 +317,11 @@
 .nav-gh:hover {
   background: rgba(65, 161, 207, 0.08);
   transform: translateY(-1px);
+}
+
+.nav-gh:active {
+  transform: translateY(-1px) scale(0.92);
+  transition: background 0.2s var(--ease), transform 0.5s var(--nav-spring);
 }
 
 .nav-gh svg {

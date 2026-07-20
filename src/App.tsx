@@ -339,18 +339,27 @@ function CapModal({ cap, onClose }: { cap: (typeof CAPS)[number]; onClose: () =>
 function App() {
   const heroRef = useRef<HTMLElement>(null)
   const navRef = useRef<HTMLElement>(null)
+  const navLinksRef = useRef<HTMLElement>(null)
+  const navPillRef = useRef<HTMLSpanElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
   const [activeCap, setActiveCap] = useState<number | null>(null)
   useReveal()
 
-  /* one scroll listener drives three quiet, related effects: the hero      */
+  /* one scroll listener drives four quiet, related effects: the hero       */
   /* photo's parallax drift, the nav pill firming up once you leave the     */
-  /* hero, and a thin scroll-progress fill inset in the pill. */
+  /* hero, a thin scroll-progress fill inset in the pill, and the liquid-   */
+  /* glass active-section pill sliding under whichever nav link is in view. */
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const hero = heroRef.current
     const nav = navRef.current
+    const navLinks = navLinksRef.current
+    const navPill = navPillRef.current
     const progress = progressRef.current
+    const sections = [
+      { id: 'work', el: document.getElementById('work') },
+      { id: 'team', el: document.getElementById('team') },
+    ]
     let raf = 0
 
     const update = () => {
@@ -365,6 +374,30 @@ function App() {
       if (progress) {
         const max = document.documentElement.scrollHeight - window.innerHeight
         progress.style.setProperty('--scroll-progress', String(max > 0 ? Math.min(1, y / max) : 0))
+      }
+      if (navLinks && navPill) {
+        /* classic scrollspy: the active section is the last one (in document */
+        /* order) whose top has crossed the line just below the floating nav. */
+        const threshold = 140
+        let activeId: string | null = null
+        for (const { id, el } of sections) {
+          if (el && el.getBoundingClientRect().top <= threshold) activeId = id
+        }
+
+        navLinks.querySelectorAll<HTMLElement>('[data-nav]').forEach((link) => {
+          link.classList.toggle('is-active', link.dataset.nav === activeId)
+        })
+
+        const target = activeId ? navLinks.querySelector<HTMLElement>(`[data-nav="${activeId}"]`) : null
+        if (target) {
+          const containerRect = navLinks.getBoundingClientRect()
+          const targetRect = target.getBoundingClientRect()
+          navPill.style.opacity = '1'
+          navPill.style.width = `${targetRect.width}px`
+          navPill.style.transform = `translateX(${targetRect.left - containerRect.left}px)`
+        } else {
+          navPill.style.opacity = '0'
+        }
       }
     }
 
@@ -386,14 +419,25 @@ function App() {
     <div className="page">
       <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
 
-      <header className="nav" ref={navRef}>
+      <header
+        className="nav"
+        ref={navRef}
+        onPointerMove={(e) => {
+          const el = e.currentTarget
+          const rect = el.getBoundingClientRect()
+          el.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`)
+          el.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`)
+        }}
+      >
+        <span className="nav-glare" aria-hidden="true" />
         <a className="nav-brand" href="#top" aria-label="Eightbit Labs home">
           <LogoMark className="nav-mark" />
           <span>eightbit labs</span>
         </a>
-        <nav className="nav-links">
-          <a href="#work">Work</a>
-          <a href="#team">Team</a>
+        <nav className="nav-links" ref={navLinksRef}>
+          <span className="nav-pill" ref={navPillRef} aria-hidden="true" />
+          <a href="#work" data-nav="work">Work</a>
+          <a href="#team" data-nav="team">Team</a>
           <a className="nav-gh" href="https://github.com/Eightbit-Labs" target="_blank" rel="noreferrer">
             <GithubIcon />
             <span>GitHub</span>
