@@ -392,9 +392,10 @@ function App() {
         if (target) {
           const containerRect = navLinks.getBoundingClientRect()
           const targetRect = target.getBoundingClientRect()
+          const pad = 30 // extra cushion on each side so the pill wraps the full label
           navPill.style.opacity = '1'
-          navPill.style.width = `${targetRect.width}px`
-          navPill.style.transform = `translateX(${targetRect.left - containerRect.left}px)`
+          navPill.style.width = `${targetRect.width + pad * 2}px`
+          navPill.style.transform = `translateX(${targetRect.left - containerRect.left - pad}px)`
         } else {
           navPill.style.opacity = '0'
         }
